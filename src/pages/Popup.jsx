@@ -12,11 +12,28 @@ const initialValue = {
 };
 
 export default function () {
+  const [formData, setFormData] = useState(initialValue);
+
   useEffect(() => {
-    console.log("Hello from the popup!");
+    async function getData() {
+      const data = await browser.storage.local.get();
+      if (Object.keys(data).length === 0) {
+        await browser.storage.local.set(initialValue);
+        console.log("NO DATA set to initial value useEffect");
+      } else {
+        console.log(data, "getData from storage by useEffect");
+      }
+    }
+    getData();
   }, []);
 
-  const [formData, setFormData] = useState(initialValue);
+  useEffect(() => {
+    async function saveData() {
+      await browser.storage.local.set(formData);
+      console.log(formData, "saveData by useEffect");
+    }
+    saveData();
+  }, [formData]);
 
   const paymentMethodOptions = [
     { value: "first_payment_method", label: "First Payment Method" },
@@ -62,8 +79,18 @@ export default function () {
       <MainButton type={"success"} onClick={() => handleOnClickButton("START")}>
         START
       </MainButton>
-      <MainButton type={"danger"}>STOP</MainButton>
-      <MainButton type={"primary"}>SAVE DATA</MainButton>
+      <MainButton
+        type={"danger"}
+        onClick={() => handleOnClickButton("GET_DATA")}
+      >
+        GET DATA
+      </MainButton>
+      <MainButton
+        type={"primary"}
+        onClick={() => handleOnClickButton("SAVE_DATA")}
+      >
+        SAVE DATA
+      </MainButton>
     </div>
   );
 }
