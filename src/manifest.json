@@ -14,7 +14,8 @@
   "{{firefox}}.browser_action": {
     "default_popup": "src/index.html"
   },
-  "{{chrome}}.permissions": ["storage"],
+  "{{chrome}}.permissions": ["storage", "tabs", "scripting", "activeTab"],
+  "{{firefox}}.permissions": ["storage", "tabs", "scripting", "activeTab"],
   "background": {
     "{{chrome}}.service_worker": "src/background.js",
     "{{firefox}}.scripts": ["src/background.js"]

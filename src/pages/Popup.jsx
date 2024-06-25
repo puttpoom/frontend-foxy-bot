@@ -5,7 +5,7 @@ import MainButton from "../components/MainButton";
 import browser from "webextension-polyfill";
 
 const initialValue = {
-  link: "https://www.lazada.co.th/shop/health-beauty/",
+  url: "https://www.lazada.co.th/#?",
   quantity: 1,
   delayRefresh: 800,
   paymentMethod: "first_payment_method",
@@ -21,6 +21,7 @@ export default function () {
         await browser.storage.local.set(initialValue);
         console.log("NO DATA set to initial value useEffect");
       } else {
+        setFormData(data);
         console.log(data, "getData from storage by useEffect");
       }
     }
@@ -52,23 +53,23 @@ export default function () {
     <div className="p-4 grid gap-2 ">
       <h1 className="text-2xl font-bold">Lazada Shoper</h1>
       <TextInput
-        label={"Link"}
-        placeholder="Link's Good"
-        value={formData.link}
-        onChange={(value) => handleOnChangeInput("link", value)}
+        label={"URL"}
+        placeholder="URL"
+        value={formData.url}
+        onChange={(value) => handleOnChangeInput("url", value)}
       />
       <TextInput
         label={"Quantity"}
         type="number"
         placeholder="Quantity"
         value={formData.quantity}
-        onChange={(value) => handleOnChangeInput("quantity", value)}
+        onChange={(value) => handleOnChangeInput("quantity", Number(value))}
       />
       <TextInput
         label={"Delay Refresh"}
         placeholder="DelayRefresh"
         value={formData.delayRefresh}
-        onChange={(value) => handleOnChangeInput("delayRefresh", value)}
+        onChange={(value) => handleOnChangeInput("delayRefresh", Number(value))}
       />
       <SelectorInput
         label={"Payment Method"}
