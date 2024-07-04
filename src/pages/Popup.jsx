@@ -67,6 +67,9 @@ export default function () {
         options={paymentMethodOptions}
       />
       {isRunning ? (
+        <p className="text-red-400">STATUS: BOT IS RUNNING...</p>
+      ) : null}
+      {isRunning ? (
         <MainButton
           type={"primary"}
           onClick={() => handleOnClickButton("STOP")}
