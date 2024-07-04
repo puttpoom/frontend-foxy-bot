@@ -23,14 +23,22 @@ function styleButton(type) {
   }
 }
 
-export default function MainButton({ children, onClick, type }) {
+export default function MainButton({
+  children,
+  onClick,
+  type,
+  isRunning = false,
+}) {
   return (
     <div>
       <button
         onClick={onClick}
+        disabled={isRunning}
         className={`${styleButton(
           type
-        )} p-2 w-full font-bold rounded-md hover:bg-opacity-80 focus:outline-none`}
+        )} p-2 w-full font-bold rounded-md hover:bg-opacity-80 focus:outline-none ${
+          isRunning ? "cursor-not-allowed" : "cursor-pointer"
+        }`}
       >
         {children}
       </button>

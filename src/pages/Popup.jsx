@@ -13,6 +13,7 @@ const initialValue = {
 
 export default function () {
   const [formData, setFormData] = useState(initialValue);
+  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
     async function saveData() {
@@ -32,6 +33,8 @@ export default function () {
   }
 
   function handleOnClickButton(type) {
+    if (type === "START") setIsRunning(true);
+    else setIsRunning(false);
     browser.runtime.sendMessage({ type, data: formData });
   }
 
@@ -63,17 +66,27 @@ export default function () {
         onChange={(value) => handleOnChangeInput("paymentMethod", value)}
         options={paymentMethodOptions}
       />
-      <MainButton type={"success"} onClick={() => handleOnClickButton("START")}>
-        START
-      </MainButton>
+      {isRunning ? (
+        <MainButton
+          type={"primary"}
+          onClick={() => handleOnClickButton("STOP")}
+        >
+          STOP
+        </MainButton>
+      ) : (
+        <MainButton
+          isRunning={isRunning}
+          type={"success"}
+          onClick={() => handleOnClickButton("START")}
+        >
+          START
+        </MainButton>
+      )}
       <MainButton
         type={"danger"}
         onClick={() => handleOnClickButton("GET_DATA")}
       >
         GET DATA
-      </MainButton>
-      <MainButton type={"primary"} onClick={() => handleOnClickButton("STOP")}>
-        STOP
       </MainButton>
     </div>
   );
