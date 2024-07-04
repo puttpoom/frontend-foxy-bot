@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
+import browser from "webextension-polyfill";
+import axios from "axios";
+
+import Container from "../layouts/Container";
+
 import TextInput from "../components/TextInput";
 import SelectorInput from "../components/SelectorInput";
 import MainButton from "../components/MainButton";
-import browser from "webextension-polyfill";
 
 const initialValue = {
   url: "https://www.lazada.co.th/#?",
@@ -23,6 +27,14 @@ export default function () {
     saveData();
   }, [formData]);
 
+  useEffect(() => {
+    async function getUser() {
+      const res = await axios.get("http://localhost:3000/api/users");
+      console.log(res, "getUser by useEffect");
+    }
+    getUser();
+  }, []);
+
   const paymentMethodOptions = [
     { value: "LazadaWallet", label: "Lazada Wallet" },
     { value: "QRcode", label: "QR Code" },
@@ -39,7 +51,7 @@ export default function () {
   }
 
   return (
-    <div className="p-4 grid gap-2 ">
+    <Container>
       <h1 className="text-2xl font-bold">Lazada Shoper</h1>
       <TextInput
         label={"URL"}
@@ -91,6 +103,6 @@ export default function () {
       >
         GET DATA
       </MainButton>
-    </div>
+    </Container>
   );
 }
