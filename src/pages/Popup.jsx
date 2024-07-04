@@ -8,25 +8,11 @@ const initialValue = {
   url: "https://www.lazada.co.th/#?",
   quantity: 1,
   delayRefresh: 800,
-  paymentMethod: "first_payment_method",
+  paymentMethod: "LazadaWallet",
 };
 
 export default function () {
   const [formData, setFormData] = useState(initialValue);
-
-  useEffect(() => {
-    async function getData() {
-      const data = await browser.storage.local.get();
-      if (Object.keys(data).length === 0) {
-        await browser.storage.local.set(initialValue);
-        console.log("NO DATA set to initial value useEffect");
-      } else {
-        setFormData(data);
-        console.log(data, "getData from storage by useEffect");
-      }
-    }
-    getData();
-  }, []);
 
   useEffect(() => {
     async function saveData() {
@@ -37,8 +23,8 @@ export default function () {
   }, [formData]);
 
   const paymentMethodOptions = [
-    { value: "first_payment_method", label: "First Payment Method" },
-    { value: "second_payment_method", label: "Second Payment Method" },
+    { value: "LazadaWallet", label: "Lazada Wallet" },
+    { value: "QRcode", label: "QR Code" },
   ];
 
   function handleOnChangeInput(key, value) {

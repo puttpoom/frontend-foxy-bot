@@ -4,10 +4,22 @@ const initialValue = {
   url: "https://www.lazada.co.th/#?",
   quantity: 1,
   delayRefresh: 800,
-  paymentMethod: "first_payment_method",
+  paymentMethod: "LazadaWallet",
 };
 
-async function querryTabs(url) {
+let intervalInjectScript = null;
+
+const XPATH_PAYMENT_METHOD = {
+  LazadaWallet: "//p[text()='Lazada Wallet ']",
+  QRcode: "//p[text()='QR พร้อมเพย์']",
+};
+
+const XPATH_BUY_NOW_BTN_TH = "//span[text()='ซื้อเลย ']";
+const XPATH_BUY_NOW_BTN_EN = "//span[text()='Buy Now']";
+const XPATH_QUANTITY_INPUT = "//input[@value='1']";
+const XPATH_ORDER_BTN_TH = "//div[text()='สั่งซื้อ']";
+
+async function queryTabs(url) {
   try {
     let tabs = await browser.tabs.query({});
     tabs = tabs.filter((tab) => tab.url === url);
@@ -25,59 +37,103 @@ async function querryTabs(url) {
   }
 }
 
-let XPATH_BUY_NOW_BTN_TH = "//span[text()='ซื้อเลย']";
-let XPATH_BUY_NOW_BTN_EN = "//span[text()='Buy Now']";
-
-function findElementByXpath(XPATH) {
-  const element = document.evaluate(
-    XPATH,
+async function findElementByXpath(element, action, value = 1) {
+  const xpathResult = document.evaluate(
+    element,
     document,
     null,
     XPathResult.FIRST_ORDERED_NODE_TYPE,
     null
   );
-  return element.singleNodeValue;
+
+  const elementDOM = xpathResult.singleNodeValue;
+
+  if (elementDOM) {
+    switch (action) {
+      case "click":
+        elementDOM.click();
+        return { status: true, message: "el clicked" };
+      case "changeValue":
+        elementDOM.value = value;
+        return { status: true, message: "el changed value" };
+      default:
+        break;
+    }
+  } else {
+    return { status: false, message: "Element not found" };
+  }
 }
 
 //tabId -> injectScript -> result:JSONserializable
 //injectScript(tabId, callback) //- 1.reload 2.checkStock(show 0) or available(show 1) 3.add to cart 4.checkout
 
-async function injectScript(tabId, XPATH) {
-  try {
-    const result = await browser.scripting.executeScript({
-      target: { tabId: tabId },
-      args: [XPATH],
-      func: () => {
-        const element = document.evaluate(
-          XPATH,
-          document,
-          null,
-          XPathResult.FIRST_ORDERED_NODE_TYPE,
-          null
-        ).singleNodeValue;
-        if (element) {
-          element.click();
-          return "element found and clicked";
+function injectScriptUntilSuccess(tabId, scriptingDetails, delayRefresh = 800) {
+  return new Promise((resolve, reject) => {
+    intervalInjectScript = setInterval(async () => {
+      try {
+        const [{ result }] = await browser.scripting.executeScript({
+          target: { tabId: tabId },
+          func: scriptingDetails.function,
+          args: scriptingDetails.args,
+        });
+        if (result.status) {
+          clearInterval(intervalInjectScript);
+          resolve(result);
         } else {
-          return "element not found";
+          console.log(result, "injectScriptUntilSuccess result");
         }
-      },
-    });
-    console.log(result, "injectScript by background.js");
-  } catch (error) {
-    console.log(error, "injectScript error");
-  }
+      } catch (error) {
+        // clearInterval(interval);
+        console.log(error, "injectScriptUntilSuccess error");
+        reject(error);
+      }
+    }, delayRefresh);
+  });
 }
 
 async function startBOT(data) {
   try {
-    let tabs = await querryTabs(data.url);
+    let tabs = await queryTabs(data.url);
     if (tabs.length === 0) {
       return await browser.tabs.create({ url: data.url });
     } else {
-      tabs.forEach(async (tab) => {
-        await injectScript(tab.id, XPATH_BUY_NOW_BTN_TH);
-      });
+      for (const tab of tabs) {
+        let changeQuantity = await injectScriptUntilSuccess(
+          tab.id,
+          {
+            args: [XPATH_QUANTITY_INPUT, "changeValue", data.quantity],
+            function: findElementByXpath,
+          },
+          data.delayRefresh
+        );
+
+        let clickElBuyBTN = await injectScriptUntilSuccess(
+          tab.id,
+          {
+            args: [XPATH_BUY_NOW_BTN_TH, "click"],
+            function: findElementByXpath,
+          },
+          data.delayRefresh
+        );
+
+        let selectPaymentMethod = await injectScriptUntilSuccess(
+          tab.id,
+          {
+            args: [XPATH_PAYMENT_METHOD[data.paymentMethod], "click"],
+            function: findElementByXpath,
+          },
+          data.delayRefresh
+        );
+
+        let clickOrderBTN = await injectScriptUntilSuccess(
+          tab.id,
+          {
+            args: [XPATH_ORDER_BTN_TH, "click"],
+            function: findElementByXpath,
+          },
+          data.delayRefresh
+        );
+      }
     }
   } catch (error) {
     console.log(error, "startBOT error");
@@ -121,4 +177,8 @@ browser.runtime.onMessage.addListener((message) => {
     default:
       break;
   }
+});
+
+browser.runtime.onInstalled.addListener(() => {
+  console.log("Extension installed. Initializing extension state.");
 });
