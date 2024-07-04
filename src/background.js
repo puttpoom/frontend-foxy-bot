@@ -140,6 +140,11 @@ async function startBOT(data) {
   }
 }
 
+function stopBOT() {
+  clearInterval(intervalInjectScript);
+  console.log(`stop intervalID ${intervalInjectScript} by background.js`);
+}
+
 async function saveData(data) {
   try {
     await browser.storage.local.set(data);
@@ -171,8 +176,8 @@ browser.runtime.onMessage.addListener((message) => {
     case "GET_DATA":
       getData();
       break;
-    case "SAVE_DATA":
-      saveData(message.data);
+    case "STOP":
+      stopBOT(message.data);
       break;
     default:
       break;

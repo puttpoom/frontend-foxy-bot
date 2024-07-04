@@ -72,11 +72,8 @@ export default function () {
       >
         GET DATA
       </MainButton>
-      <MainButton
-        type={"primary"}
-        onClick={() => handleOnClickButton("SAVE_DATA")}
-      >
-        SAVE DATA
+      <MainButton type={"primary"} onClick={() => handleOnClickButton("STOP")}>
+        STOP
       </MainButton>
     </div>
   );
