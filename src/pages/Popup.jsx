@@ -27,14 +27,6 @@ export default function () {
     saveData();
   }, [formData]);
 
-  useEffect(() => {
-    async function getUser() {
-      const res = await axios.get("http://localhost:3000/api/users");
-      console.log(res, "getUser by useEffect");
-    }
-    getUser();
-  }, []);
-
   const paymentMethodOptions = [
     { value: "LazadaWallet", label: "Lazada Wallet" },
     { value: "QRcode", label: "QR Code" },

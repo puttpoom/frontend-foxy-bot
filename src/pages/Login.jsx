@@ -1,14 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import browser from "webextension-polyfill";
+import useAuth from "../hooks/use-auth";
 
 import Container from "../layouts/Container";
 import TextInput from "../components/TextInput";
 import MainButton from "../components/MainButton";
 
 export default function Login() {
+  const { login, setAuthUser } = useAuth();
   const [userData, setUserData] = useState({ username: "", password: "" });
 
-  function handleLogin() {
-    console.log("Login");
+  useEffect(() => {
+    async function getAuthUser() {
+      const authUserData = await browser.storage.local.get("authUser");
+      if (authUserData.authUser) {
+        console.log(
+          authUserData.authUser,
+          "Found authUserData in local storage"
+        );
+        setAuthUser(authUserData.authUser);
+      } else {
+        console.log("No authUserData in local storage");
+      }
+    }
+    getAuthUser();
+  }, []);
+
+  async function handleLogin(credentials) {
+    const res = await login(credentials);
+    console.log(res, "login success");
   }
 
   function handleOnChangeInput(key, value) {
@@ -29,7 +49,7 @@ export default function Login() {
         value={userData.password}
         onChange={(data) => handleOnChangeInput("password", data)}
       />
-      <MainButton onClick={() => handleLogin()}>LOGIN</MainButton>
+      <MainButton onClick={() => handleLogin(userData)}>LOGIN</MainButton>
     </Container>
   );
 }
