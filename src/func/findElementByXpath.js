@@ -13,14 +13,14 @@ export default async function findElementByXpath(element, action, value = 1) {
     switch (action) {
       case "click":
         elementDOM.click();
-        return { status: true, message: "el clicked" };
+        return { status: true, message: "click" };
       case "changeValue":
         elementDOM.value = value;
-        return { status: true, message: "el changed value" };
+        return { status: true, message: "change value" };
       default:
-        break;
+        return { status: true, message: "el found" };
     }
   } else {
-    return { status: false, message: "Element not found" };
+    return { status: false, message: "el not found" };
   }
 }
