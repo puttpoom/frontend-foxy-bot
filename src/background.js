@@ -36,6 +36,32 @@ async function startBOT(data) {
       return await browser.tabs.create({ url: data.url });
     } else {
       for (const tab of tabs) {
+        let isAvailable = await injectScriptUntilSuccess(
+          tab.id,
+          {
+            function: () => {
+              location.reload();
+              let isStock = document.querySelector(
+                "#module_quantity-input > div > div > div > div.next-number-picker-input-wrap > span > input[type=text]"
+              ).value;
+
+              let isBuyNow = document.querySelector(
+                "#module_add_to_cart > div > button.add-to-cart-buy-now-btn.pdp-button.pdp-button_type_text.pdp-button_theme_yellow.pdp-button_size_xl > span"
+              );
+
+              return {
+                status: isStock === "1" && isBuyNow ? true : false,
+                message: `page reloaded, ${message}`,
+              };
+            },
+          },
+          data.delayRefresh
+        );
+
+        console.log(isAvailable, "reload page");
+
+        /*
+
         let changeQuantity = await injectScriptUntilSuccess(
           tab.id,
           {
@@ -71,6 +97,8 @@ async function startBOT(data) {
           },
           data.delayRefresh
         );
+
+        */
       }
     }
   } catch (error) {
