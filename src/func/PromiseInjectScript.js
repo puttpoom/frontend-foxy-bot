@@ -7,9 +7,10 @@ export default function injectScriptUntilSuccess(
   delayRefresh = 800
 ) {
   return new Promise((resolve, reject) => {
+    let i = 1;
     intervalInjectScript = setInterval(async () => {
       try {
-        for (let i = 0; i < 5; i++) {
+        if (i <= 20) {
           const [{ result }] = await browser.scripting.executeScript({
             target: { tabId: tabId },
             func: scriptingDetails.function,
@@ -19,12 +20,15 @@ export default function injectScriptUntilSuccess(
             clearInterval(intervalInjectScript);
             resolve(result);
           } else {
+            i++;
             console.log(result, "injectScriptUntilSuccess result");
           }
+        } else {
+          clearInterval(intervalInjectScript);
+          reject("injectScriptUntilSuccess i > 5");
         }
       } catch (error) {
-        // clearInterval(interval);
-        console.log(error, "injectScriptUntilSuccess error");
+        console.log(error, "CATCH ERROR: injectScriptUntilSuccess");
         reject(error);
       }
     }, delayRefresh);
