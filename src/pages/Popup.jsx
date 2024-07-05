@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import browser from "webextension-polyfill";
-import axios from "axios";
 
 import Container from "../layouts/Container";
 
@@ -20,8 +19,19 @@ export default function () {
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
+    async function getData() {
+      const data = await browser.storage.local.get("fromData");
+      if (data.fromData) {
+        console.log(data.fromData, "getData by useEffect");
+        setFormData(data.fromData);
+      }
+    }
+    getData();
+  }, []);
+
+  useEffect(() => {
     async function saveData() {
-      await browser.storage.local.set(formData);
+      await browser.storage.local.set({ fromData: formData });
       console.log(formData, "saveData by useEffect");
     }
     saveData();
