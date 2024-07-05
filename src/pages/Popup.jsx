@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import browser from "webextension-polyfill";
+import useAuth from "../hooks/use-auth";
 
 import Container from "../layouts/Container";
 
@@ -17,6 +18,7 @@ const initialValue = {
 export default function () {
   const [formData, setFormData] = useState(initialValue);
   const [isRunning, setIsRunning] = useState(false);
+  const { setAuthUser } = useAuth();
 
   useEffect(() => {
     async function getData() {
@@ -49,6 +51,9 @@ export default function () {
   function handleOnClickButton(type) {
     if (type === "START") setIsRunning(true);
     else setIsRunning(false);
+    if (type === "LOG_OUT") {
+      setAuthUser(null);
+    }
     browser.runtime.sendMessage({ type, data: formData });
   }
 
@@ -99,11 +104,17 @@ export default function () {
           START
         </MainButton>
       )}
-      <MainButton
+      {/* <MainButton
         type={"danger"}
         onClick={() => handleOnClickButton("GET_DATA")}
       >
         GET DATA
+      </MainButton> */}
+      <MainButton
+        type={"danger"}
+        onClick={() => handleOnClickButton("LOG_OUT")}
+      >
+        LOG OUT
       </MainButton>
     </Container>
   );

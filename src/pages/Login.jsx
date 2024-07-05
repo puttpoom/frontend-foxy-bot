@@ -20,7 +20,7 @@ export default function Login() {
         );
         setAuthUser(authUserData.authUser);
       } else {
-        console.log("No authUserData in local storage");
+        console.log("No authUserData in local storage, Need to login");
       }
     }
     getAuthUser();
@@ -39,7 +39,7 @@ export default function Login() {
     <Container>
       <p className="text-xl font-bold">Lazada Shoper</p>
       <TextInput
-        label="Username"
+        label="Email"
         value={userData.username}
         onChange={(data) => handleOnChangeInput("username", data)}
       />

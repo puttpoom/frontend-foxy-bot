@@ -134,6 +134,10 @@ async function getData() {
   }
 }
 
+async function logout() {
+  await browser.storage.local.remove("authUser");
+}
+
 browser.runtime.onMessage.addListener((message) => {
   switch (message.type) {
     case "START":
@@ -144,6 +148,9 @@ browser.runtime.onMessage.addListener((message) => {
       break;
     case "STOP":
       stopBOT(message.data);
+      break;
+    case "LOG_OUT":
+      logout();
       break;
     default:
       break;
