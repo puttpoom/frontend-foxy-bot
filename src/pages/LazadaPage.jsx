@@ -4,6 +4,7 @@ import useAuth from "../hooks/use-auth";
 import { storeSession, getSession } from "../utils/session-stroage";
 
 import Container from "../layouts/Container";
+import Navbar from "../layouts/Navbar";
 
 import TextInput from "../components/TextInput";
 import SelectorInput from "../components/SelectorInput";
@@ -16,7 +17,7 @@ const initialValue = {
   paymentMethod: "LazadaWallet",
 };
 
-export default function () {
+export default function LazadaPage() {
   const [formData, setFormData] = useState(initialValue);
   const [isRunning, setIsRunning] = useState(false);
   const { setAuthUser } = useAuth();
@@ -94,7 +95,7 @@ export default function () {
   }
 
   return (
-    <Container>
+    <>
       <h1 className="text-2xl font-bold">Lazada Shoper</h1>
       <TextInput
         label={"URL"}
@@ -152,6 +153,6 @@ export default function () {
       >
         LOG OUT
       </MainButton>
-    </Container>
+    </>
   );
 }

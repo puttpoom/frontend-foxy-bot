@@ -5,8 +5,9 @@ import useAuth from "../hooks/use-auth";
 import Container from "../layouts/Container";
 import TextInput from "../components/TextInput";
 import MainButton from "../components/MainButton";
+import Navbar from "../layouts/Navbar";
 
-export default function Login() {
+export default function LoginPage() {
   const { login, setAuthUser } = useAuth();
   const [userData, setUserData] = useState({ username: "", password: "" });
 
@@ -39,8 +40,8 @@ export default function Login() {
   }
 
   return (
-    <Container>
-      <p className="text-xl font-bold">Lazada Shoper</p>
+    <>
+      <p className="text-xl font-bold">SONIC BOT LOGIN</p>
       <TextInput
         label="Email"
         value={userData.username}
@@ -53,6 +54,6 @@ export default function Login() {
         onChange={(data) => handleOnChangeInput("password", data)}
       />
       <MainButton onClick={() => handleLogin(userData)}>LOGIN</MainButton>
-    </Container>
+    </>
   );
 }

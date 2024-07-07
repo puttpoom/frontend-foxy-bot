@@ -18,6 +18,8 @@ function styleButton(type) {
       return "bg-white text-black";
     case "white":
       return "bg-white text-black";
+    case "orange":
+      return "bg-orange-500 text-white";
     default:
       return "bg-blue-700 text-white";
   }

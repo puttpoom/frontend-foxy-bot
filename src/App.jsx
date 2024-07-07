@@ -1,9 +1,9 @@
-import React from "react";
-import useAuth from "./hooks/use-auth";
-import Login from "./pages/Login";
-import Popup from "./pages/Popup";
+import Router from "./routes";
 
 export default function App() {
-  const { authUser } = useAuth();
-  return authUser ? <Popup /> : <Popup />;
+  return (
+    <>
+      <Router />
+    </>
+  );
 }

@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import browser from "webextension-polyfill";
+
 import * as authApi from "../api/auth";
 import { storeToken, getToken, removeToken } from "../utils/local-storage";
 
@@ -34,8 +35,13 @@ export default function AuthContextProvider({ children }) {
     }
   };
 
+  const logout = async () => {
+    removeToken();
+    setAuthUser("");
+  };
+
   return (
-    <AuthContext.Provider value={{ authUser, setAuthUser, login }}>
+    <AuthContext.Provider value={{ authUser, setAuthUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
