@@ -13,11 +13,8 @@ export default function Login() {
   useEffect(() => {
     async function getAuthUser() {
       const authUserData = await browser.storage.local.get("authUser");
-      if (authUserData.authUser) {
-        console.log(
-          authUserData.authUser,
-          "Found authUserData in local storage"
-        );
+      if (authUserData) {
+        console.log(authUserData, "Found authUserData in local storage");
         setAuthUser(authUserData.authUser);
       } else {
         console.log("No authUserData in local storage, Need to login");
@@ -28,7 +25,13 @@ export default function Login() {
 
   async function handleLogin(credentials) {
     const res = await login(credentials);
-    console.log(res, "login success");
+    if (res.status === 200) {
+      setAuthUser(res.data.user);
+      await browser.storage.local.set({
+        authUser: res.data.user,
+        accessToken: res.data.accessToken,
+      });
+    }
   }
 
   function handleOnChangeInput(key, value) {

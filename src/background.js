@@ -3,6 +3,7 @@ import findElementByXpath from "./func/findElementByXpath";
 import { intervalInjectScript } from "./func/PromiseInjectScript";
 import injectScriptUntilSuccess from "./func/PromiseInjectScript";
 import queryTabs from "./func/queryTabs";
+import { querryTabsAndSaveData } from "./utils/session-stroage";
 
 const initialValue = {
   url: "https://www.lazada.co.th/#?",
@@ -33,14 +34,18 @@ async function startBOT(data) {
   try {
     let tabs = await queryTabs(data.url);
     if (tabs.length === 0) {
-      return await browser.tabs.create({ url: data.url });
+      return await browser.tabs.create({
+        url: data.url,
+        active: true,
+        index: 0,
+      });
     } else {
       for (const tab of tabs) {
         let isAvailable = await injectScriptUntilSuccess(
           tab.id,
           {
             function: () => {
-              location.reload();
+              location.reload(false);
               let isStock = document.querySelector(
                 "#module_quantity-input > div > div > div > div.next-number-picker-input-wrap > span > input[type=text]"
               ).value;
@@ -51,7 +56,9 @@ async function startBOT(data) {
 
               return {
                 status: isStock === "1" && isBuyNow ? true : false,
-                message: `page reloaded, ${message}`,
+                message: `page reloaded, stock: ${isStock}, isBuyNow: ${
+                  isBuyNow ? true : false
+                }`,
               };
             },
           },
@@ -59,8 +66,6 @@ async function startBOT(data) {
         );
 
         console.log(isAvailable, "reload page");
-
-        /*
 
         let changeQuantity = await injectScriptUntilSuccess(
           tab.id,
@@ -80,6 +85,7 @@ async function startBOT(data) {
           data.delayRefresh
         );
 
+        /*
         let selectPaymentMethod = await injectScriptUntilSuccess(
           tab.id,
           {
@@ -96,8 +102,7 @@ async function startBOT(data) {
             function: findElementByXpath,
           },
           data.delayRefresh
-        );
-
+        ); 
         */
       }
     }

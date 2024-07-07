@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import browser from "webextension-polyfill";
 import useAuth from "../hooks/use-auth";
+import { storeSession, getSession } from "../utils/session-stroage";
 
 import Container from "../layouts/Container";
 
@@ -21,6 +22,39 @@ export default function () {
   const { setAuthUser } = useAuth();
 
   useEffect(() => {
+    async function getSessionData() {
+      let tabs = await browser.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+      // tabs = tabs.filter((tab) => tab.url === formData.url);
+      let storageKey = tabs[0].id;
+      console.log(storageKey, "storageKey (windowId)");
+      const data = await getSession(storageKey);
+      if (data[storageKey]) {
+        console.log(data[storageKey], "getSessionData by useEffect");
+        setFormData(data[storageKey]);
+      }
+    }
+    getSessionData();
+  }, []);
+
+  useEffect(() => {
+    async function saveSessionData() {
+      let tabs = await browser.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+      // tabs = tabs.filter((tab) => tab.url === formData.url);
+      let storageKey = tabs[0].id;
+      await storeSession(storageKey, formData);
+      console.log(formData, "saveSessionData by useEffect");
+    }
+    saveSessionData();
+  }, [formData]);
+
+  /*
+  useEffect(() => {
     async function getData() {
       const data = await browser.storage.local.get("fromData");
       if (data.fromData) {
@@ -38,6 +72,8 @@ export default function () {
     }
     saveData();
   }, [formData]);
+
+  */
 
   const paymentMethodOptions = [
     { value: "LazadaWallet", label: "Lazada Wallet" },

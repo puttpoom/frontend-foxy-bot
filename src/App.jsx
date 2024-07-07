@@ -5,5 +5,5 @@ import Popup from "./pages/Popup";
 
 export default function App() {
   const { authUser } = useAuth();
-  return authUser ? <Popup /> : <Login />;
+  return authUser ? <Popup /> : <Popup />;
 }
