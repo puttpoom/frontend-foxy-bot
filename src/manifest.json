@@ -20,14 +20,16 @@
     "tabs",
     "scripting",
     "activeTab",
-    "windows"
+    "windows",
+    "sessions"
   ],
   "{{firefox}}.permissions": [
     "storage",
     "tabs",
     "scripting",
     "activeTab",
-    "windows"
+    "windows",
+    "sessions"
   ],
   "background": {
     "{{chrome}}.service_worker": "src/background.js",
