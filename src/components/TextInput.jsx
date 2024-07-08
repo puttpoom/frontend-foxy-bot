@@ -8,17 +8,15 @@ export default function TextInput({
   ...rest
 }) {
   return (
-    <div>
-      <label>
-        {label}
-        <input
-          type={type}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          className="p-2 w-full border border-black focus:outline-none focus:border-blue-500 rounded-md"
-        />
-      </label>
+    <div className="flex flex-col w-full">
+      {label}
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="p-2 w-full border border-black focus:outline-none focus:border-blue-500 rounded-md"
+      />
     </div>
   );
 }
