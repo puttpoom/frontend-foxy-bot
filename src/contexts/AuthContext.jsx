@@ -23,7 +23,9 @@ export default function AuthContextProvider({ children }) {
             const { user } = res.data;
             setAuthUser({ user, accessToken: token.accessToken, fingerprint });
           } else {
-            removeToken();
+            // removeToken();
+            setAuthUser("");
+            browser.storage.local.clear();
           }
         }
       } catch (error) {

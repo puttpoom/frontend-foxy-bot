@@ -1,9 +1,8 @@
 import browser from "webextension-polyfill";
 import findElementByXpath from "./func/findElementByXpath";
 import { intervalInjectScript } from "./func/PromiseInjectScript";
-import injectScriptUntilSuccess from "./func/PromiseInjectScript";
 import queryTabs from "./func/queryTabs";
-import { querryTabsAndSaveData } from "./utils/session-stroage";
+import LazadaShoper from "./features/lazada/lazada-shoper";
 
 const initialValue = {
   url: "",
@@ -38,91 +37,30 @@ const XPATH_QUANTITY_INPUT_SP = "//input[@value='1']";
 //tabId -> injectScript -> result:JSONserializable
 //injectScript(tabId, callback) //- 1.reload 2.checkStock(show 0) or available(show 1) 3.add to cart 4.checkout
 
-function selectPlatform(data) {
-  switch (data.platform) {
-    case "Lazada":
-      break;
-    case "Shopee":
-      break;
-    default:
-      break;
-  }
-}
-
 async function startBOT(data) {
   try {
     let tabs = await queryTabs(data.url);
     if (tabs.length === 0) {
-      return await browser.tabs.create({
+      // return await browser.tabs.create({
+      //   url: data.url,
+      //   active: true,
+      //   index: 0,
+      // });
+      return await browser.windows.create({
         url: data.url,
-        active: true,
-        index: 0,
       });
     } else {
-      for (const tab of tabs) {
-        let isAvailable = await injectScriptUntilSuccess(
-          tab.id,
-          {
-            function: () => {
-              location.reload(false);
-              let isStock = document.querySelector(
-                "#module_quantity-input > div > div > div > div.next-number-picker-input-wrap > span > input[type=text]"
-              ).value;
-
-              let isBuyNow = document.querySelector(
-                "#module_add_to_cart > div > button.add-to-cart-buy-now-btn.pdp-button.pdp-button_type_text.pdp-button_theme_yellow.pdp-button_size_xl > span"
-              );
-
-              return {
-                status: isStock === "1" && isBuyNow ? true : false,
-                message: `page reloaded, stock: ${isStock}, isBuyNow: ${
-                  isBuyNow ? true : false
-                }`,
-              };
-            },
-          },
-          data.delayRefresh
-        );
-
-        console.log(isAvailable, "reload page");
-
-        let changeQuantity = await injectScriptUntilSuccess(
-          tab.id,
-          {
-            args: [XPATH_QUANTITY_INPUT, "changeValue", data.quantity],
-            function: findElementByXpath,
-          },
-          data.delayRefresh
-        );
-
-        let clickElBuyBTN = await injectScriptUntilSuccess(
-          tab.id,
-          {
-            args: [XPATH_BUY_NOW_BTN_TH, "click"],
-            function: findElementByXpath,
-          },
-          data.delayRefresh
-        );
-
-        /*
-        let selectPaymentMethod = await injectScriptUntilSuccess(
-          tab.id,
-          {
-            args: [XPATH_PAYMENT_METHOD[data.paymentMethod], "click"],
-            function: findElementByXpath,
-          },
-          data.delayRefresh
-        );
-
-        let clickOrderBTN = await injectScriptUntilSuccess(
-          tab.id,
-          {
-            args: [XPATH_ORDER_BTN_TH, "click"],
-            function: findElementByXpath,
-          },
-          data.delayRefresh
-        ); 
-        */
+      switch (data.platform) {
+        case "Lazada":
+          console.log("Lazada");
+          await LazadaShoper(tabs[0].id, data);
+          break;
+        case "Shopee":
+          console.log("Shopee");
+          break;
+        default:
+          console.log("No platform selected");
+          break;
       }
     }
   } catch (error) {

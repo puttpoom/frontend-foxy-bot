@@ -75,7 +75,7 @@ export default function ShopeePage() {
   */
 
   const paymentMethodOptions = [
-    { value: "LazadaWallet", label: "Lazada Wallet" },
+    { value: "ShopeePay", label: "Shopee Pay" },
     { value: "QRcode", label: "QR Code" },
   ];
 
@@ -135,7 +135,7 @@ export default function ShopeePage() {
         <MainButton
           isRunning={isRunning}
           type={"success"}
-          onClick={() => handleOnClickButton("START_SP")}
+          onClick={() => handleOnClickButton("START")}
         >
           START
         </MainButton>

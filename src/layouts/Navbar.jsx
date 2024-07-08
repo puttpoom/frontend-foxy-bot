@@ -10,7 +10,7 @@ export default function Navbar() {
     <div className="flex justify-between gap-2">
       {/* <p>{fingerprint}</p> */}
       <p></p>
-      <p>{authUser.user.email}</p>
+      <p>{authUser?.user?.email}</p>
     </div>
   );
 }
