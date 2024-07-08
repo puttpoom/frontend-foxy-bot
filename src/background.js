@@ -6,13 +6,14 @@ import queryTabs from "./func/queryTabs";
 import { querryTabsAndSaveData } from "./utils/session-stroage";
 
 const initialValue = {
-  url: "https://www.lazada.co.th/#?",
+  url: "",
   quantity: 1,
   delayRefresh: 800,
-  paymentMethod: "LazadaWallet",
+  paymentMethod: "",
+  platform: "",
 };
 
-//! ------------------ XPATH ------------------
+//! ------------------ XPATH Lazada ------------------
 
 const XPATH_BUY_NOW_BTN_TH = "//span[text()='ซื้อเลย']";
 const XPATH_BUY_NOW_BTN_EN = "//span[text()='Buy Now']";
@@ -25,10 +26,28 @@ const XPATH_PAYMENT_METHOD = {
   QRcode: "//p[text()='QR พร้อมเพย์']",
 };
 
-//! --------------------------------------------
+//! --------------------------------------------------
+
+//! ------------------ XPATH Shopee ------------------
+
+const XPATH_BUY_NOW_BTN_TH_SP = "//button[text()='ซื้อสินค้า']";
+const XPATH_QUANTITY_INPUT_SP = "//input[@value='1']";
+
+//! --------------------------------------------------
 
 //tabId -> injectScript -> result:JSONserializable
 //injectScript(tabId, callback) //- 1.reload 2.checkStock(show 0) or available(show 1) 3.add to cart 4.checkout
+
+function selectPlatform(data) {
+  switch (data.platform) {
+    case "Lazada":
+      break;
+    case "Shopee":
+      break;
+    default:
+      break;
+  }
+}
 
 async function startBOT(data) {
   try {

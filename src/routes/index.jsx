@@ -5,6 +5,7 @@ import LoginPage from "../pages/LoginPage";
 import Container from "../layouts/Container";
 import ProtectedPage from "../pages/ProtectedPage";
 import MenuPage from "../pages/MenuPage";
+import ShopeePage from "../pages/ShopeePage";
 
 const router = createHashRouter([
   {
@@ -36,6 +37,10 @@ const router = createHashRouter([
       {
         path: "lazada",
         element: <LazadaPage />,
+      },
+      {
+        path: "shopee",
+        element: <ShopeePage />,
       },
     ],
   },

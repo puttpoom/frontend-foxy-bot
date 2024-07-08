@@ -8,14 +8,14 @@ import SelectorInput from "../components/SelectorInput";
 import MainButton from "../components/MainButton";
 
 const initialValue = {
-  url: "https://www.lazada.co.th/#?",
+  url: "https://shopee.co.th/",
   quantity: 1,
   delayRefresh: 800,
-  paymentMethod: "LazadaWallet",
-  platform: "Lazada",
+  paymentMethod: "ShoppePay",
+  platform: "Shopee",
 };
 
-export default function LazadaPage() {
+export default function ShopeePage() {
   const [formData, setFormData] = useState(initialValue);
   const [isRunning, setIsRunning] = useState(false);
   const { setAuthUser, logout } = useAuth();
@@ -95,7 +95,7 @@ export default function LazadaPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold">Lazada Shoper</h1>
+      <h1 className="text-2xl font-bold">Shopee Shoper</h1>
       <TextInput
         label={"URL"}
         placeholder="URL"
@@ -135,7 +135,7 @@ export default function LazadaPage() {
         <MainButton
           isRunning={isRunning}
           type={"success"}
-          onClick={() => handleOnClickButton("START")}
+          onClick={() => handleOnClickButton("START_SP")}
         >
           START
         </MainButton>
