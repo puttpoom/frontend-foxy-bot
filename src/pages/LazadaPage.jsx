@@ -20,7 +20,7 @@ const initialValue = {
 export default function LazadaPage() {
   const [formData, setFormData] = useState(initialValue);
   const [isRunning, setIsRunning] = useState(false);
-  const { setAuthUser } = useAuth();
+  const { setAuthUser, logout } = useAuth();
 
   useEffect(() => {
     async function getSessionData() {
@@ -30,7 +30,7 @@ export default function LazadaPage() {
       });
       // tabs = tabs.filter((tab) => tab.url === formData.url);
       let storageKey = tabs[0].id;
-      console.log(storageKey, "storageKey (windowId)");
+      console.log(storageKey, "storageKey (tabId)");
       const data = await getSession(storageKey);
       if (data[storageKey]) {
         console.log(data[storageKey], "getSessionData by useEffect");
@@ -89,7 +89,8 @@ export default function LazadaPage() {
     if (type === "START") setIsRunning(true);
     else setIsRunning(false);
     if (type === "LOG_OUT") {
-      setAuthUser(null);
+      logout();
+      return;
     }
     browser.runtime.sendMessage({ type, data: formData });
   }

@@ -4,8 +4,4 @@ import App from "./App";
 
 import AuthContextProvider from "./contexts/AuthContext";
 
-ReactDOM.createRoot(document.body).render(
-  <AuthContextProvider>
-    <App />
-  </AuthContextProvider>
-);
+ReactDOM.createRoot(document.body).render(<App />);
