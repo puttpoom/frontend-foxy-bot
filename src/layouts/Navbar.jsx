@@ -8,8 +8,8 @@ export default function Navbar() {
   }
   return (
     <div className="flex justify-between gap-2">
-      <p>{fingerprint ? fingerprint : null}</p>
-      <p>{authUser.email ? authUser.email : "Email"}</p>
+      <p>{fingerprint}</p>
+      <p>{authUser.user.email}</p>
     </div>
   );
 }

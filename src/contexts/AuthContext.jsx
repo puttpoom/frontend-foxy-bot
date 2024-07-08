@@ -21,7 +21,7 @@ export default function AuthContextProvider({ children }) {
 
           if (res.status === 200) {
             const { user } = res.data;
-            setAuthUser(user);
+            setAuthUser({ user, accessToken: token.accessToken, fingerprint });
           } else {
             removeToken();
           }
