@@ -7,6 +7,8 @@ import TextInput from "../components/TextInput";
 import SelectorInput from "../components/SelectorInput";
 import MainButton from "../components/MainButton";
 
+import { AppWindow, Play, LogOut, Bot } from "lucide-react";
+
 const initialValue = {
   url: "https://shopee.co.th/",
   quantity: 1,
@@ -52,28 +54,6 @@ export default function ShopeePage() {
     saveSessionData();
   }, [formData]);
 
-  /*
-  useEffect(() => {
-    async function getData() {
-      const data = await browser.storage.local.get("fromData");
-      if (data.fromData) {
-        console.log(data.fromData, "getData by useEffect");
-        setFormData(data.fromData);
-      }
-    }
-    getData();
-  }, []);
-
-  useEffect(() => {
-    async function saveData() {
-      await browser.storage.local.set({ fromData: formData });
-      console.log(formData, "saveData by useEffect");
-    }
-    saveData();
-  }, [formData]);
-
-  */
-
   const paymentMethodOptions = [
     { value: "ShopeePay", label: "Shopee Pay" },
     { value: "QRcode", label: "QR Code" },
@@ -95,13 +75,24 @@ export default function ShopeePage() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold">Shopee Shoper</h1>
-      <TextInput
-        label={"URL"}
-        placeholder="URL"
-        value={formData.url}
-        onChange={(value) => handleOnChangeInput("url", value)}
-      />
+      <h1 className="text-lg font-bold text-center">Shopee Shoper</h1>
+      <div className="flex gap-2 items-end justify-between">
+        <TextInput
+          label={"URL"}
+          placeholder="URL"
+          value={formData.url}
+          onChange={(value) => handleOnChangeInput("url", value)}
+        />
+        <MainButton
+          type={"primary"}
+          onClick={() => handleOnClickButton("OPEN")}
+        >
+          <p className="flex flex-grow-0 gap-1">
+            <AppWindow size={16} />
+            OPEN
+          </p>
+        </MainButton>
+      </div>
       <TextInput
         label={"Quantity"}
         type="number"

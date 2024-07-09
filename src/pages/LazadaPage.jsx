@@ -7,6 +7,8 @@ import TextInput from "../components/TextInput";
 import SelectorInput from "../components/SelectorInput";
 import MainButton from "../components/MainButton";
 
+import { AppWindow } from "lucide-react";
+
 const initialValue = {
   url: "https://www.lazada.co.th/#?",
   quantity: 1,
@@ -95,13 +97,24 @@ export default function LazadaPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold">Lazada Shoper</h1>
-      <TextInput
-        label={"URL"}
-        placeholder="URL"
-        value={formData.url}
-        onChange={(value) => handleOnChangeInput("url", value)}
-      />
+      <h1 className="text-lg font-bold text-center">Lazada Shoper</h1>
+      <div className="flex gap-2 items-end justify-between">
+        <TextInput
+          label={"URL"}
+          placeholder="URL"
+          value={formData.url}
+          onChange={(value) => handleOnChangeInput("url", value)}
+        />
+        <MainButton
+          type={"primary"}
+          onClick={() => handleOnClickButton("OPEN")}
+        >
+          <p className="flex flex-grow-0 gap-1">
+            <AppWindow size={16} />
+            OPEN
+          </p>
+        </MainButton>
+      </div>
       <TextInput
         label={"Quantity"}
         type="number"
@@ -146,12 +159,12 @@ export default function LazadaPage() {
       >
         GET DATA
       </MainButton> */}
-      <MainButton
+      {/* <MainButton
         type={"danger"}
         onClick={() => handleOnClickButton("LOG_OUT")}
       >
         LOG OUT
-      </MainButton>
+      </MainButton> */}
     </>
   );
 }

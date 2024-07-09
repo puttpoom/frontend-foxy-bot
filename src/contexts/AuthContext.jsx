@@ -23,12 +23,13 @@ export default function AuthContextProvider({ children }) {
             const { user } = res.data;
             setAuthUser({ user, accessToken: token.accessToken, fingerprint });
           } else {
-            // removeToken();
             setAuthUser("");
             browser.storage.local.clear();
           }
         }
       } catch (error) {
+        setAuthUser("");
+        browser.storage.local.clear();
         console.log("Error", error);
       } finally {
         setInitialLoading(false);

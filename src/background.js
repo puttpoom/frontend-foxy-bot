@@ -114,6 +114,12 @@ browser.runtime.onMessage.addListener((message) => {
     case "LOG_OUT":
       logout();
       break;
+    case "OPEN":
+      browser.windows.create({
+        url: message.data.url,
+        focused: true,
+      });
+      break;
     default:
       break;
   }

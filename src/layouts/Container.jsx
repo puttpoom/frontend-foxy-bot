@@ -7,10 +7,12 @@ import Footer from "./Footer";
 export default function Container() {
   const { authUser } = useAuth();
   return (
-    <div className="p-4 grid gap-2">
-      {authUser && <Navbar />}
-      <Outlet />
-      <Footer />
-    </div>
+    <>
+      <div className="p-4 grid gap-2 bg-gray-50">
+        {authUser && <Navbar />}
+        <Outlet />
+        <Footer />
+      </div>
+    </>
   );
 }
