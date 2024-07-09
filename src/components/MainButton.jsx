@@ -30,6 +30,7 @@ export default function MainButton({
   onClick,
   type,
   isRunning = false,
+  addClass,
 }) {
   return (
     <div>
@@ -38,7 +39,7 @@ export default function MainButton({
         disabled={isRunning}
         className={`${styleButton(
           type
-        )} p-2.5 w-full font-bold rounded-md hover:bg-opacity-80 focus:outline-none ${
+        )} ${addClass} p-2.5 w-full font-bold rounded-md hover:bg-opacity-80 focus:outline-none ${
           isRunning ? "cursor-not-allowed" : "cursor-pointer"
         }`}
       >

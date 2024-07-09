@@ -9,7 +9,7 @@ export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
   const [authUser, setAuthUser] = useState(null);
-  const [fingerprint, setFingerprint] = useState(null);
+  const [uuid, setUuid] = useState(null);
   const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function AuthContextProvider({ children }) {
 
           if (res.status === 200) {
             const { user } = res.data;
-            setAuthUser({ user, accessToken: token.accessToken, fingerprint });
+            setAuthUser({ user, accessToken: token.accessToken });
           } else {
             setAuthUser("");
             browser.storage.local.clear();
@@ -42,14 +42,22 @@ export default function AuthContextProvider({ children }) {
     const fp = await FingerprintJS.load();
     const result = await fp.get();
     const fingerprint = result.visitorId;
-    setFingerprint(fingerprint);
+    setUuid(fingerprint);
 
-    const res = await authApi.login(credential);
+    const data = { ...credential, uuid: fingerprint };
+    const res = await authApi.login(data);
     if (res.status === 200) {
       setAuthUser(res.data);
       console.log(res.data, "login by AuthContextProvider");
       const { user, accessToken } = res.data;
+
       browser.storage.local.set({ user, accessToken, fingerprint });
+      const storageData = await browser.storage.local.get([
+        "user",
+        "accessToken",
+        "fingerprint",
+      ]);
+      console.log(storageData, "Auth Context");
       return res.data;
     } else {
       return res;
@@ -57,10 +65,12 @@ export default function AuthContextProvider({ children }) {
   };
 
   const logout = async () => {
-    // removeToken();
-    await browser.storage.local.clear();
-    setAuthUser("");
-    console.log("logout by AuthContextProvider");
+    const res = await authApi.logout();
+    if (res.status === 200) {
+      await browser.storage.local.clear();
+      setAuthUser("");
+      console.log(res.data, "logout by AuthContextProvider");
+    }
   };
 
   return (
@@ -70,7 +80,7 @@ export default function AuthContextProvider({ children }) {
         setAuthUser,
         login,
         logout,
-        fingerprint,
+        uuid,
         initialLoading,
       }}
     >
