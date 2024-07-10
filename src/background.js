@@ -52,8 +52,7 @@ async function startBOT(data) {
     } else {
       switch (data.platform) {
         case "Lazada":
-          console.log("Lazada");
-          await LazadaShoper(tabs[0].id, data);
+          await LazadaShoper(tabs, data);
           break;
         case "Shopee":
           console.log("Shopee");
