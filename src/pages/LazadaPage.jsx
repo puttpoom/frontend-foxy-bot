@@ -83,7 +83,7 @@ export default function LazadaPage() {
   }
 
   return (
-    <div>
+    <>
       <div className="flex gap-1 justify-between text-center ">
         <button onClick={() => setIsShow((prv) => !prv)}>
           {isShow ? <ChevronRight size={12} /> : <ChevronDown size={12} />}
@@ -164,6 +164,6 @@ export default function LazadaPage() {
           START
         </MainButton>
       )}
-    </div>
+    </>
   );
 }
