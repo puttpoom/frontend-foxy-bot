@@ -3,7 +3,7 @@ import useAuth from "../hooks/use-auth";
 import { LogOut } from "lucide-react";
 
 export default function Navbar() {
-  const { authUser, fingerprint, initialLoading, logout } = useAuth();
+  const { authUser, initialLoading, logout } = useAuth();
   console.log(authUser, "Navbar");
 
   function handleOnClickButton(type) {
@@ -17,17 +17,25 @@ export default function Navbar() {
     return <div>Loading...</div>;
   }
   return (
-    <div className="flex justify-between items-center gap-2">
-      {/* <p>{fingerprint}</p> */}
+    <div className="flex justify-between gap-2 items-center">
+      <p className="flex gap-2 items-center">
+        {authUser?.user?.email}
+        <MainButton
+          addClass={"p-[4px] text-[10px] font-bold opacity-80"}
+          type={"warning"}
+          onClick={() => handleOnClickButton("LOG_OUT")}
+        >
+          Premium
+          {/* <LogOut size={16} /> */}
+        </MainButton>
+      </p>
       <MainButton
-        addClass={"p-[6px] text-[10px] font-bold opacity-60"}
-        type={"danger"}
+        addClass={"p-[4px] text-[12px] font-bold opacity-80"}
+        type={"none"}
         onClick={() => handleOnClickButton("LOG_OUT")}
       >
-        {/* <LogOut size={18} /> */}
-        LOG OUT
+        <LogOut size={14} />
       </MainButton>
-      <p>{authUser?.user?.email}</p>
     </div>
   );
 }

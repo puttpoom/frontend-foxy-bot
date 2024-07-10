@@ -10,7 +10,9 @@ export default function Container() {
     <>
       <div className="p-4 grid gap-2 bg-gray-50">
         {authUser && <Navbar />}
+
         <Outlet />
+
         <Footer />
       </div>
     </>

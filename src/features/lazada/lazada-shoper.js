@@ -16,7 +16,7 @@ const XPATH_PAYMENT_METHOD = {
 
 //! --------------------------------------------------
 
-export default async function LazadaShoper(tabId, data) {
+export default async function LazadaShoper(tabs, data) {
   try {
     for (const tab of tabs) {
       let isAvailable = await injectScriptUntilSuccess(

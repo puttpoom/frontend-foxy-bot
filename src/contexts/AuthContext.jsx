@@ -82,6 +82,7 @@ export default function AuthContextProvider({ children }) {
         logout,
         uuid,
         initialLoading,
+        uuid,
       }}
     >
       {children}

@@ -7,19 +7,28 @@ import TextInput from "../components/TextInput";
 import SelectorInput from "../components/SelectorInput";
 import MainButton from "../components/MainButton";
 
-import { AppWindow } from "lucide-react";
+import {
+  AppWindow,
+  ShoppingBag,
+  ChevronDown,
+  ChevronRight,
+  Play,
+  Pause,
+} from "lucide-react";
 
 const initialValue = {
-  url: "https://www.lazada.co.th/#?",
+  url: "",
   quantity: 1,
   delayRefresh: 800,
   paymentMethod: "LazadaWallet",
   platform: "Lazada",
+  dateTimeOnSale: new Date().toLocaleString(),
 };
 
 export default function LazadaPage() {
   const [formData, setFormData] = useState(initialValue);
   const [isRunning, setIsRunning] = useState(false);
+  const [isShow, setIsShow] = useState(true);
   const { setAuthUser, logout } = useAuth();
 
   useEffect(() => {
@@ -28,7 +37,6 @@ export default function LazadaPage() {
         active: true,
         currentWindow: true,
       });
-      // tabs = tabs.filter((tab) => tab.url === formData.url);
       let storageKey = tabs[0].id;
       console.log(storageKey, "storageKey (tabId)");
       const data = await getSession(storageKey);
@@ -46,35 +54,13 @@ export default function LazadaPage() {
         active: true,
         currentWindow: true,
       });
-      // tabs = tabs.filter((tab) => tab.url === formData.url);
+
       let storageKey = tabs[0].id;
       await storeSession(storageKey, formData);
       console.log(formData, "saveSessionData by useEffect");
     }
     saveSessionData();
   }, [formData]);
-
-  /*
-  useEffect(() => {
-    async function getData() {
-      const data = await browser.storage.local.get("fromData");
-      if (data.fromData) {
-        console.log(data.fromData, "getData by useEffect");
-        setFormData(data.fromData);
-      }
-    }
-    getData();
-  }, []);
-
-  useEffect(() => {
-    async function saveData() {
-      await browser.storage.local.set({ fromData: formData });
-      console.log(formData, "saveData by useEffect");
-    }
-    saveData();
-  }, [formData]);
-
-  */
 
   const paymentMethodOptions = [
     { value: "LazadaWallet", label: "Lazada Wallet" },
@@ -97,46 +83,70 @@ export default function LazadaPage() {
 
   return (
     <>
-      <h1 className="text-lg font-bold text-center">Lazada Shoper</h1>
-      <div className="flex gap-2 items-end justify-between">
-        <TextInput
-          label={"URL"}
-          placeholder="URL"
-          value={formData.url}
-          onChange={(value) => handleOnChangeInput("url", value)}
-        />
-        <MainButton
-          type={"primary"}
-          onClick={() => handleOnClickButton("OPEN")}
-        >
-          <p className="flex flex-grow-0 gap-1">
-            <AppWindow size={16} />
-            OPEN
-          </p>
-        </MainButton>
+      <div className="flex gap-1 justify-between text-center ">
+        <button onClick={() => setIsShow((prv) => !prv)}>
+          {isShow ? <ChevronRight size={12} /> : <ChevronDown size={12} />}
+        </button>
+        <p className="flex text-center font-bold text-[16px] items-center gap-1">
+          Lazada Shoper
+        </p>
+        <p></p>
       </div>
-      <TextInput
-        label={"Quantity"}
-        type="number"
-        placeholder="Quantity"
-        value={formData.quantity}
-        onChange={(value) => handleOnChangeInput("quantity", Number(value))}
-      />
-      <TextInput
-        label={"Delay Refresh"}
-        placeholder="DelayRefresh"
-        value={formData.delayRefresh}
-        onChange={(value) => handleOnChangeInput("delayRefresh", Number(value))}
-      />
-      <SelectorInput
-        label={"Payment Method"}
-        value={formData.paymentMethod}
-        onChange={(value) => handleOnChangeInput("paymentMethod", value)}
-        options={paymentMethodOptions}
-      />
+      <div className="border-b"></div>
+      <div className={isShow ? "hidden" : "block"}>
+        <div className="flex gap-2 items-end justify-between ">
+          <TextInput
+            label={"URL"}
+            placeholder="URL"
+            value={formData.url}
+            onChange={(value) => handleOnChangeInput("url", value)}
+          />
+          <MainButton
+            type={"primary"}
+            onClick={() => handleOnClickButton("OPEN")}
+          >
+            <p className="flex flex-grow-0 gap-1">
+              <AppWindow size={16} />
+              OPEN
+            </p>
+          </MainButton>
+        </div>
+        <TextInput
+          type="datetime-local"
+          label={"Date Time"}
+          placeholder=""
+          value={formData.dateTimeOnSale}
+          onChange={(value) => handleOnChangeInput("dateTimeOnSale", value)}
+        />
+        <TextInput
+          label={"Quantity"}
+          type="number"
+          placeholder="Quantity"
+          value={formData.quantity}
+          onChange={(value) => handleOnChangeInput("quantity", Number(value))}
+        />
+        <TextInput
+          type="number"
+          min="0"
+          step="100"
+          label={"Delay Refresh"}
+          placeholder="DelayRefresh"
+          value={formData.delayRefresh}
+          onChange={(value) =>
+            handleOnChangeInput("delayRefresh", Number(value))
+          }
+        />
+        <SelectorInput
+          label={"Payment Method"}
+          value={formData.paymentMethod}
+          onChange={(value) => handleOnChangeInput("paymentMethod", value)}
+          options={paymentMethodOptions}
+        />
+      </div>
       {isRunning ? (
         <p className="text-red-400">STATUS: BOT IS RUNNING...</p>
       ) : null}
+
       {isRunning ? (
         <MainButton
           type={"primary"}
@@ -153,18 +163,6 @@ export default function LazadaPage() {
           START
         </MainButton>
       )}
-      {/* <MainButton
-        type={"danger"}
-        onClick={() => handleOnClickButton("GET_DATA")}
-      >
-        GET DATA
-      </MainButton> */}
-      {/* <MainButton
-        type={"danger"}
-        onClick={() => handleOnClickButton("LOG_OUT")}
-      >
-        LOG OUT
-      </MainButton> */}
     </>
   );
 }
