@@ -11,6 +11,7 @@ export default function TextInput({
     <div className="flex flex-col w-full">
       {label}
       <input
+        {...rest}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
