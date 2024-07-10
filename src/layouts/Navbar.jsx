@@ -18,7 +18,7 @@ export default function Navbar() {
   }
   return (
     <div className="flex justify-between gap-2 items-center">
-      <p className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center">
         {authUser?.user?.email}
         <MainButton
           addClass={"p-[4px] text-[10px] font-bold opacity-80"}
@@ -28,7 +28,7 @@ export default function Navbar() {
           Premium
           {/* <LogOut size={16} /> */}
         </MainButton>
-      </p>
+      </div>
       <MainButton
         addClass={"p-[4px] text-[12px] font-bold opacity-80"}
         type={"none"}

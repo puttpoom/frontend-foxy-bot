@@ -6,7 +6,7 @@ export default function MenuPage() {
   const { authUser, fingerprint, initialLoading } = useAuth();
   console.log(authUser, "MenuPage");
   return (
-    <>
+    <div>
       {initialLoading ? (
         <Spinner />
       ) : (
@@ -28,6 +28,6 @@ export default function MenuPage() {
           </MainButton>
         </div>
       )}
-    </>
+    </div>
   );
 }

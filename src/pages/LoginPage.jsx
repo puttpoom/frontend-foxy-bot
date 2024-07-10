@@ -46,7 +46,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <p className="text-xl font-bold">SONIC BOT LOGIN</p>
+      <p className="text-[16px] text-center font-bold">SONIC BOT</p>
       <TextInput
         label="Email"
         value={userData.username}

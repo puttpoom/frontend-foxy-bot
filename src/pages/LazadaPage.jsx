@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import browser from "webextension-polyfill";
 import useAuth from "../hooks/use-auth";
 import { storeSession, getSession } from "../utils/session-stroage";
+import { getCurrentDateTime } from "../func/checkDateTime";
 
 import TextInput from "../components/TextInput";
 import SelectorInput from "../components/SelectorInput";
@@ -22,7 +23,7 @@ const initialValue = {
   delayRefresh: 800,
   paymentMethod: "LazadaWallet",
   platform: "Lazada",
-  dateTimeOnSale: new Date().toLocaleString(),
+  dateTimeOnSale: getCurrentDateTime(),
 };
 
 export default function LazadaPage() {
@@ -82,7 +83,7 @@ export default function LazadaPage() {
   }
 
   return (
-    <>
+    <div>
       <div className="flex gap-1 justify-between text-center ">
         <button onClick={() => setIsShow((prv) => !prv)}>
           {isShow ? <ChevronRight size={12} /> : <ChevronDown size={12} />}
@@ -129,8 +130,8 @@ export default function LazadaPage() {
           type="number"
           min="0"
           step="100"
-          label={"Delay Refresh"}
-          placeholder="DelayRefresh"
+          label={"Delay Refresh (ms)"}
+          placeholder="DelayRefresh (ms)"
           value={formData.delayRefresh}
           onChange={(value) =>
             handleOnChangeInput("delayRefresh", Number(value))
@@ -163,6 +164,6 @@ export default function LazadaPage() {
           START
         </MainButton>
       )}
-    </>
+    </div>
   );
 }
