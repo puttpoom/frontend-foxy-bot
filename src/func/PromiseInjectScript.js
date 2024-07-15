@@ -16,7 +16,7 @@ export default function injectScriptUntilSuccess(
             func: scriptingDetails.function,
             args: scriptingDetails.args,
           });
-          if (result.status) {
+          if (result.status && result.status !== null) {
             clearInterval(intervalInjectScript);
             resolve(result);
           } else {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import browser from "webextension-polyfill";
 import useAuth from "../hooks/use-auth";
 import { storeSession, getSession } from "../utils/session-stroage";
-import { getCurrentDateTime } from "../func/checkDateTime";
+// import { getCurrentDateTime } from "../func/checkDateTime";
 
 import TextInput from "../components/TextInput";
 import SelectorInput from "../components/SelectorInput";
@@ -20,10 +20,10 @@ import {
 const initialValue = {
   url: "",
   quantity: 1,
-  delayRefresh: 800,
+  delayRefresh: 1500,
   paymentMethod: "LazadaWallet",
   platform: "Lazada",
-  dateTimeOnSale: getCurrentDateTime(),
+  dateTime: "",
 };
 
 export default function LazadaPage() {
@@ -84,15 +84,14 @@ export default function LazadaPage() {
 
   return (
     <>
-      <div className="flex gap-1 justify-between text-center ">
-        <button onClick={() => setIsShow((prv) => !prv)}>
-          {isShow ? <ChevronRight size={12} /> : <ChevronDown size={12} />}
-        </button>
-        <p className="flex text-center font-bold text-[16px] items-center gap-1">
-          Lazada Shoper
-        </p>
+      <button
+        className="flex justify-between text-center font-bold text-[16px] items-center gap-1"
+        onClick={() => setIsShow((prv) => !prv)}
+      >
+        <p>{isShow ? <ChevronRight size={12} /> : <ChevronDown size={12} />}</p>
+        <p>Lazada Shoper</p>
         <p></p>
-      </div>
+      </button>
       <div className="border-b"></div>
       <div className={isShow ? "hidden" : "block"}>
         <div className="flex gap-2 items-end justify-between ">
@@ -116,8 +115,8 @@ export default function LazadaPage() {
           type="datetime-local"
           label={"Date Time"}
           placeholder=""
-          value={formData.dateTimeOnSale}
-          onChange={(value) => handleOnChangeInput("dateTimeOnSale", value)}
+          value={formData.dateTime}
+          onChange={(value) => handleOnChangeInput("dateTime", value)}
         />
         <TextInput
           label={"Quantity"}

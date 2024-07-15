@@ -1,24 +1,27 @@
-export function getCurrentDateTime() {
-  const now = new Date();
-  const adjustedNow = new Date(now.getTime()); // Add offset in milliseconds
-  const isoString = adjustedNow.toLocaleTimeString(); // Format: "YYYY-MM-DDTHH:MM"
-  return isoString.slice(0, 16); // Return only the date and time part
+function checkTime(targetTime) {
+  const targetDate = new Date(targetTime); // แปลงเวลาที่รับมาให้เป็น Date object
+  const interval = 500; // ความถี่ในการตรวจสอบ (500 มิลลิวินาที)
+
+  // ฟังก์ชันสำหรับตรวจสอบเวลา
+  function check() {
+    const currentDate = new Date(); // เวลาปัจจุบัน
+    if (currentDate >= targetDate) {
+      console.log("Time is up!");
+      clearInterval(timer); // หยุดการตรวจสอบเมื่อถึงเวลาที่กำหนด
+      return true;
+    }
+  }
+
+  // เริ่มตรวจสอบทุก ๆ 500 มิลลิวินาที
+  const timer = setInterval(check, interval);
+
+  // คืนค่าเป็นฟังก์ชันที่สามารถหยุดการตรวจสอบได้
+  return () => clearInterval(timer);
 }
 
-export default function checkDateTime(dateTime) {
-  const now = new Date();
-  const adjustedNow = new Date(now.getTime()); // Add offset in milliseconds
-  const isoString = adjustedNow.toLocaleTimeString(); // Format: "YYYY-MM-DDTHH:MM"
-  const currentDateTime = isoString.slice(0, 16); // Return only the date and time part
+// การใช้งาน
+const targetTime = "2024-07-10T12:00:00"; // ตัวอย่างเวลาที่ต้องการตรวจสอบ
+const stopChecking = checkTime(targetTime);
 
-  const intervalDateTime = new Promise((resolve, reject) => {
-    setInterval(() => {
-      if (dateTime === currentDateTime || dateTime < currentDateTime) {
-        clearInterval(intervalDateTime);
-        resolve(true);
-      } else {
-        reject(false);
-      }
-    }, 1000);
-  });
-}
+// หากต้องการหยุดการตรวจสอบก่อนถึงเวลาที่กำหนด
+// stopChecking();
