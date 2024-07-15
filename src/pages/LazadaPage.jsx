@@ -33,6 +33,18 @@ export default function LazadaPage() {
   const { setAuthUser, logout } = useAuth();
 
   useEffect(() => {
+    async function getURL() {
+      let tabs = await browser.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+      let url = tabs[0].url;
+      setFormData((prev) => ({ ...prev, url }));
+    }
+    getURL();
+  }, [formData.url]);
+
+  useEffect(() => {
     async function getSessionData() {
       let tabs = await browser.tabs.query({
         active: true,

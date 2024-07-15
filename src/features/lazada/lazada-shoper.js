@@ -1,3 +1,4 @@
+import browser from "webextension-polyfill";
 import injectScriptUntilSuccess from "../../func/PromiseInjectScript";
 import findElementByXpath from "../../func/findElementByXpath";
 // import checkDateTime from "../../func/checkDateTime";
@@ -9,6 +10,8 @@ const XPATH_BUY_NOW_BTN_EN = "//span[text()='Buy Now']";
 const XPATH_QUANTITY_INPUT = "//input[@value='1']";
 const XPATH_ORDER_BTN_TH = "//div[text()='สั่งซื้อ']";
 const XPATH_ORDER_BTN_EN = "//div[text()='Place Order']";
+
+const XPATH_POPUP_OVERSEA_BUYING = "//i[contains(@class, 'next-icon-close')]";
 
 const XPATH_PAYMENT_METHOD = {
   LazadaWallet: "//p[text()='Lazada Wallet ']",
@@ -42,10 +45,8 @@ export default async function LazadaShoper(tabs, data) {
             };
           },
         },
-        data.delayRefresh
+        800
       );
-
-      console.log(isAvailable, "reload page");
 
       let changeQuantity = await injectScriptUntilSuccess(
         tab.id,
@@ -84,6 +85,6 @@ export default async function LazadaShoper(tabs, data) {
       );
     }
   } catch (error) {
-    console.log("Error: LazadaShoper", error);
+    console.log("Error LazadaShoper: ", error);
   }
 }
