@@ -1,10 +1,17 @@
-function checkTime(targetTime) {
+export default function checkTime(targetTime) {
   const targetDate = new Date(targetTime); // แปลงเวลาที่รับมาให้เป็น Date object
+  console.log(targetDate, "targerDate");
   const interval = 500; // ความถี่ในการตรวจสอบ (500 มิลลิวินาที)
 
   // ฟังก์ชันสำหรับตรวจสอบเวลา
   function check() {
     const currentDate = new Date(); // เวลาปัจจุบัน
+    console.log(
+      "Running check",
+      currentDate,
+      targetDate,
+      currentDate >= targetDate
+    );
     if (currentDate >= targetDate) {
       console.log("Time is up!");
       clearInterval(timer); // หยุดการตรวจสอบเมื่อถึงเวลาที่กำหนด
@@ -20,7 +27,7 @@ function checkTime(targetTime) {
 }
 
 // การใช้งาน
-const targetTime = "2024-07-10T12:00:00"; // ตัวอย่างเวลาที่ต้องการตรวจสอบ
+// const targetTime = "2024-07-10T12:00:00"; // ตัวอย่างเวลาที่ต้องการตรวจสอบ
 const stopChecking = checkTime(targetTime);
 
 // หากต้องการหยุดการตรวจสอบก่อนถึงเวลาที่กำหนด

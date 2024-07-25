@@ -5,11 +5,9 @@ import useAuth from "../hooks/use-auth";
 import TextInput from "../components/TextInput";
 import MainButton from "../components/MainButton";
 
-const PROJECT_NAME = import.meta.env.VITE_PROJECT_NAME;
-
 export default function LoginPage() {
-  const { login, setAuthUser, fingerprint } = useAuth();
-  const [userData, setUserData] = useState({ email: "", password: "" });
+  const { register, setAuthUser, fingerprint } = useAuth();
+  const [userData, setUserData] = useState({ username: "", password: "" });
 
   useEffect(() => {
     async function getAuthUser() {
@@ -31,8 +29,8 @@ export default function LoginPage() {
     getAuthUser();
   }, []);
 
-  async function handleLogin(credentials) {
-    await login(credentials);
+  async function handleRegister(credentials) {
+    await register(credentials);
   }
 
   function handleOnChangeInput(key, value) {
@@ -41,11 +39,11 @@ export default function LoginPage() {
 
   return (
     <>
-      {/* <p className="text-[16px] text-center font-bold">{PROJECT_NAME}</p> */}
+      <p className="text-[16px] text-center font-bold">SONIC BOT</p>
       <TextInput
         label="Email"
-        value={userData.email}
-        onChange={(data) => handleOnChangeInput("email", data)}
+        value={userData.username}
+        onChange={(data) => handleOnChangeInput("username", data)}
       />
       <TextInput
         label="Password"
@@ -53,7 +51,12 @@ export default function LoginPage() {
         value={userData.password}
         onChange={(data) => handleOnChangeInput("password", data)}
       />
-      <MainButton onClick={() => handleLogin(userData)}>LOGIN</MainButton>
+      <TextInput
+        label="Code"
+        value={userData.Code}
+        onChange={(data) => handleOnChangeInput("Code", data)}
+      />
+      <MainButton onClick={() => handleRegister(userData)}>REGISTER</MainButton>
     </>
   );
 }

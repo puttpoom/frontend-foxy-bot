@@ -1,8 +1,8 @@
 import browser from "webextension-polyfill";
-import findElementByXpath from "./func/findElementByXpath";
-import { intervalInjectScript } from "./func/PromiseInjectScript";
+import { stopIntervalInjectScript } from "./func/PromiseInjectScript";
 import queryTabs from "./func/queryTabs";
 import LazadaShoper from "./features/lazada/lazada-shoper";
+// import checkTime from "./func/checkDateTime";
 
 const initialValue = {
   url: "",
@@ -68,8 +68,8 @@ async function startBOT(data) {
 }
 
 function stopBOT() {
-  clearInterval(intervalInjectScript);
-  console.log(`stop intervalID ${intervalInjectScript} by background.js`);
+  stopIntervalInjectScript();
+  console.log(`stopIntervalInjectScript by background.js`);
 }
 
 async function saveData(data) {

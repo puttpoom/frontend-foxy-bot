@@ -16,7 +16,7 @@ export default function TextInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="p-2 w-full border border-black focus:outline-none focus:border-blue-500 rounded-md"
+        className="p-2 w-full border border-black focus:outline-none focus:border-blue-500 rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed  disabled:text-gray-400"
       />
     </div>
   );

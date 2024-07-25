@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 const initialValue = {
-  url: "",
+  url: "https://www.lazada.co.th/",
   quantity: 1,
   delayRefresh: 1500,
   paymentMethod: "LazadaWallet",
@@ -101,13 +101,14 @@ export default function LazadaPage() {
         onClick={() => setIsShow((prv) => !prv)}
       >
         <p>{isShow ? <ChevronRight size={12} /> : <ChevronDown size={12} />}</p>
-        <p>Lazada Shoper</p>
+        <p>Laz Shoper</p>
         <p></p>
       </button>
       <div className="border-b"></div>
       <div className={isShow ? "hidden" : "block"}>
         <div className="flex gap-2 items-end justify-between ">
           <TextInput
+            disabled
             label={"URL"}
             placeholder="URL"
             value={formData.url}
@@ -123,13 +124,13 @@ export default function LazadaPage() {
             </p>
           </MainButton>
         </div>
-        <TextInput
+        {/*<TextInput
           type="datetime-local"
           label={"Date Time"}
           placeholder=""
           value={formData.dateTime}
           onChange={(value) => handleOnChangeInput("dateTime", value)}
-        />
+  />*/}
         <TextInput
           label={"Quantity"}
           type="number"

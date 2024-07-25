@@ -1,7 +1,7 @@
-import browser from "webextension-polyfill";
-import injectScriptUntilSuccess from "../../func/PromiseInjectScript";
+import injectScriptUntilSuccess, {
+  stopIntervalInjectScript,
+} from "../../func/PromiseInjectScript";
 import findElementByXpath from "../../func/findElementByXpath";
-// import checkDateTime from "../../func/checkDateTime";
 
 //! ------------------ XPATH Lazada ------------------
 
@@ -86,5 +86,6 @@ export default async function LazadaShoper(tabs, data) {
     }
   } catch (error) {
     console.log("Error LazadaShoper: ", error);
+    stopIntervalInjectScript();
   }
 }

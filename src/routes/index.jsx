@@ -6,6 +6,9 @@ import Container from "../layouts/Container";
 import ProtectedPage from "../pages/ProtectedPage";
 import MenuPage from "../pages/MenuPage";
 import ShopeePage from "../pages/ShopeePage";
+import PackagePage from "../pages/PackagePage";
+import { User } from "lucide-react";
+import UserPage from "../pages/UserPage";
 
 const router = createHashRouter([
   {
@@ -41,6 +44,30 @@ const router = createHashRouter([
       {
         path: "shopee",
         element: <ShopeePage />,
+      },
+    ],
+  },
+  {
+    path: "/package",
+    element: <Container />,
+    children: [
+      {
+        path: "",
+        element: <PackagePage />,
+      },
+    ],
+  },
+  {
+    path: "/user",
+    element: (
+      <ProtectedPage>
+        <Container />
+      </ProtectedPage>
+    ),
+    children: [
+      {
+        path: "",
+        element: <UserPage />,
       },
     ],
   },

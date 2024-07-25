@@ -9,6 +9,7 @@ export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
   const [authUser, setAuthUser] = useState(null);
+  const [userSubcription, setUserSubcription] = useState(null);
   const [uuid, setUuid] = useState(null);
   const [initialLoading, setInitialLoading] = useState(true);
 
@@ -36,7 +37,18 @@ export default function AuthContextProvider({ children }) {
       }
     }
     getAuthUser();
-  }, []);
+  }, [userSubcription]);
+
+  const buyPackage = async (packageId) => {
+    const res = await authApi.userBuyPackage({ packageId: +packageId });
+    if (res.status === 200) {
+      console.log(res.data, "buyPackage by AuthContextProvider");
+      setUserSubcription(res.data);
+      return res;
+    } else {
+      console.log(res.data, "buyPackage by AuthContextProvider");
+    }
+  };
 
   const login = async (credential) => {
     const fp = await FingerprintJS.load();
@@ -82,7 +94,9 @@ export default function AuthContextProvider({ children }) {
         logout,
         uuid,
         initialLoading,
-        uuid,
+        userSubcription,
+        setUserSubcription,
+        buyPackage,
       }}
     >
       {children}
