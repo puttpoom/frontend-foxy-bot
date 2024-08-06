@@ -62,7 +62,9 @@ export default function PackagePage() {
                 </option>
                 {packages.map((el) => (
                   <option key={el.id} value={el.id}>
-                    {el.duration} days {el.price}$
+                    {el.duration === 9999
+                      ? `Lifetime ${el.price}$`
+                      : `${el.duration} days ${el.price}$`}
                   </option>
                 ))}
               </select>
