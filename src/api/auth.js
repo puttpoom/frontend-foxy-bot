@@ -15,3 +15,8 @@ export const getAllpackages = () => axios.get("/api/package");
 
 export const userBuyPackage = (data) =>
   axios.post("/api/subcription/buy", data);
+
+export const lineLogin = () => axios.get("/api/auth/line/login");
+
+export const linePostCallback = (data) =>
+  axios.post("/api/auth/line/postCallback", data);

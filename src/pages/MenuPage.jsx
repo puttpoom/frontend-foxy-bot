@@ -6,9 +6,15 @@ import { useEffect, useState } from "react";
 import * as authApi from "../api/auth";
 
 export default function MenuPage() {
-  const { authUser, fingerprint, userSubcription, setUserSubcription } =
-    useAuth();
+  const {
+    authUser,
+    setAuthUser,
+    fingerprint,
+    userSubcription,
+    setUserSubcription,
+  } = useAuth();
   const [initialLoading, setInitialLoading] = useState(true);
+
   useEffect(() => {
     async function getUserSubcription() {
       try {
@@ -32,7 +38,32 @@ export default function MenuPage() {
     }
     getUserSubcription();
   }, []);
-  console.log(authUser, "MenuPage");
+
+  useEffect(() => {
+    async function getAuthUser() {
+      try {
+        const token = await browser.storage.local.get("accessToken");
+        if (token) {
+          const res = await authApi.getAuthUser(token);
+
+          if (res.status === 200) {
+            const { user } = res.data;
+            setAuthUser({ user, accessToken: token.accessToken });
+          } else {
+            setAuthUser("");
+            browser.storage.local.clear();
+          }
+        }
+      } catch (error) {
+        setAuthUser("");
+        browser.storage.local.clear();
+        console.log("Error", error);
+      } finally {
+        setInitialLoading(false);
+      }
+    }
+    getAuthUser();
+  }, []);
 
   const getTimeLeft = (startDate, endDate) => {
     const start = new Date(startDate);

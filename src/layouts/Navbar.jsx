@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MainButton from "../components/MainButton";
 import useAuth from "../hooks/use-auth";
 import { LogOut, ShoppingBag, UserRound, Wallet, Menu } from "lucide-react";
@@ -6,11 +6,14 @@ import { LogOut, ShoppingBag, UserRound, Wallet, Menu } from "lucide-react";
 export default function Navbar() {
   const {
     authUser,
+    setAuthUser,
     initialLoading,
     logout,
     userSubcription,
     setUserSubcription,
   } = useAuth();
+
+  // const [initialLoading, setInitialLoading] = useState(true);
 
   function handleOnClickButton(type) {
     if (type === "LOG_OUT") {
@@ -19,9 +22,6 @@ export default function Navbar() {
     }
   }
 
-  if (initialLoading) {
-    return <div>Loading...</div>;
-  }
   return (
     <div className="flex justify-between gap-2 items-center">
       <div className="flex gap-2 items-center">
@@ -37,7 +37,7 @@ export default function Navbar() {
           disabled={true}
         >
           <Wallet size={14} />
-          {authUser.user.point.toLocaleString()}$
+          {authUser.user?.point.toLocaleString()}$
         </MainButton>
       </div>
       <div className="flex gap-1">

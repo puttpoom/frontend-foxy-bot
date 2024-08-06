@@ -13,32 +13,6 @@ export default function AuthContextProvider({ children }) {
   const [uuid, setUuid] = useState(null);
   const [initialLoading, setInitialLoading] = useState(true);
 
-  useEffect(() => {
-    async function getAuthUser() {
-      try {
-        const token = await browser.storage.local.get("accessToken");
-        if (token) {
-          const res = await authApi.getAuthUser(token);
-
-          if (res.status === 200) {
-            const { user } = res.data;
-            setAuthUser({ user, accessToken: token.accessToken });
-          } else {
-            setAuthUser("");
-            browser.storage.local.clear();
-          }
-        }
-      } catch (error) {
-        setAuthUser("");
-        browser.storage.local.clear();
-        console.log("Error", error);
-      } finally {
-        setInitialLoading(false);
-      }
-    }
-    getAuthUser();
-  }, [userSubcription]);
-
   const buyPackage = async (packageId) => {
     const res = await authApi.userBuyPackage({ packageId: +packageId });
     if (res.status === 200) {
@@ -85,6 +59,35 @@ export default function AuthContextProvider({ children }) {
     }
   };
 
+  const lineLogin = async () => {
+    const state = Math.random().toString(36).substring(7);
+    const redirectUri = encodeURIComponent(
+      `${import.meta.env.VITE_LINE_REDIRECT_URI}`
+    );
+    const lineLoginUrl = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${
+      import.meta.env.VITE_LINE_CHANNEL_ID
+    }&redirect_uri=${redirectUri}&state=${state}&scope=profile%20openid`;
+    console.log("LINE LOGIN", lineLoginUrl);
+
+    //navigate to line login page in current tabs
+    browser.tabs.create({ url: lineLoginUrl });
+  };
+
+  const linePostCallback = async (data) => {
+    try {
+      const res = await authApi.linePostCallback(data);
+      if (res.status === 200) {
+        console.log(res.data, "linePostCallback by AuthContextProvider");
+        // setAuthUser(res.data);
+        // browser.storage.local.set(res.data);
+      } else {
+        console.log("NO res linePostCallback by AuthContextProvider");
+      }
+    } catch (error) {
+      console.log(error, "linePostCallback error by AuthContextProvider");
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -97,6 +100,9 @@ export default function AuthContextProvider({ children }) {
         userSubcription,
         setUserSubcription,
         buyPackage,
+        lineLogin,
+        linePostCallback,
+        setInitialLoading,
       }}
     >
       {children}

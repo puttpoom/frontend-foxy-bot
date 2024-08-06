@@ -119,8 +119,36 @@ browser.runtime.onMessage.addListener((message) => {
         focused: true,
       });
       break;
+
     default:
       break;
+  }
+});
+
+browser.webRequest.onCompleted.addListener(
+  (details) => {
+    console.log(details, "webRequest.onCompleted");
+  },
+  {
+    urls: ["<all_urls>"],
+    types: ["main_frame"],
+  }
+);
+
+browser.webNavigation.onCommitted.addListener(async (details) => {
+  if (details.url.startsWith(`${import.meta.env.VITE_LINE_REDIRECT_URI}`)) {
+    const url = new URL(details.url);
+    const code = url.searchParams.get("code");
+    const state = url.searchParams.get("state");
+
+    console.log("webNavigation.onCommitted", code, state);
+
+    // ส่งข้อมูลกลับไปยัง extension
+
+    await browser.storage.local.set({ code: code, state: state });
+
+    const storage = await browser.storage.local.get(["code", "state"]);
+    console.log(storage, "storage");
   }
 });
 

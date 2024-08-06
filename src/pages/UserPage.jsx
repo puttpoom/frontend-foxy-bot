@@ -4,8 +4,8 @@ export default function UserPage() {
   const { authUser } = useAuth();
   return (
     <div>
-      <p>{authUser.user.email}</p>
-      <p>{authUser.user.uuid}</p>
+      <p>{authUser.user?.email}</p>
+      <p>{authUser.user?.uuid}</p>
     </div>
   );
 }

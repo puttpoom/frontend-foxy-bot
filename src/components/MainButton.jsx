@@ -8,6 +8,8 @@ function styleButton(type) {
       return "bg-red-700 text-white";
     case "success":
       return "bg-green-700 text-white";
+    case "line-btn":
+      return "bg-green-500 text-white";
     case "warning":
       return "bg-yellow-500 text-white";
     case "info":
