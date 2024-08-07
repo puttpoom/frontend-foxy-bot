@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import MainButton from "../components/MainButton";
 import useAuth from "../hooks/use-auth";
+import { useNavigate } from "react-router-dom";
 import { LogOut, ShoppingBag, UserRound, Wallet, Menu } from "lucide-react";
 
 export default function Navbar() {
@@ -12,6 +13,8 @@ export default function Navbar() {
     userSubcription,
     setUserSubcription,
   } = useAuth();
+
+  const navigate = useNavigate();
 
   // const [initialLoading, setInitialLoading] = useState(true);
 
@@ -28,7 +31,7 @@ export default function Navbar() {
         <UserRound
           size={14}
           className="opacity-80 cursor-pointer"
-          onClick={() => (window.location.href = "#/user")}
+          onClick={() => navigate("/user")}
         />
         {authUser?.user?.email}
         <MainButton
@@ -44,7 +47,7 @@ export default function Navbar() {
         <MainButton
           addClass={"p-[4px] text-[12px] font-bold opacity-80"}
           onClick={() => {
-            window.location.href = "#/menu";
+            navigate("/menu");
           }}
           type={"none"}
         >
@@ -53,7 +56,7 @@ export default function Navbar() {
         <MainButton
           addClass={"p-[4px] text-[12px] font-bold opacity-80"}
           onClick={() => {
-            window.location.href = "#/package";
+            navigate("/package");
           }}
           type={"none"}
         >

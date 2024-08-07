@@ -4,6 +4,7 @@ import MainButton from "../components/MainButton";
 import Spinner from "../components/Spinner";
 import { useEffect, useState } from "react";
 import * as authApi from "../api/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function MenuPage() {
   const {
@@ -14,6 +15,7 @@ export default function MenuPage() {
     setUserSubcription,
   } = useAuth();
   const [initialLoading, setInitialLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getUserSubcription() {
@@ -86,7 +88,9 @@ export default function MenuPage() {
                     <MainButton
                       key={el.id}
                       onClick={() => {
-                        window.location.href = `${el.package.href}`;
+                        navigate(
+                          `${el.package.href}/:packageId=${el.package.id}`
+                        );
                       }}
                     >
                       {el.package.name} [{getTimeLeft(el.startDate, el.endDate)}

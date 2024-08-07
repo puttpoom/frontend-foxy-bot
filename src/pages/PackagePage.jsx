@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as authApi from "../api/auth";
 import Spinner from "../components/Spinner";
 import { Bot, ShoppingCart, TicketCheck } from "lucide-react";
@@ -10,6 +11,7 @@ export default function PackagePage() {
   const [selectedPackage, setSelectedPackage] = useState(0);
   const [loading, setLoading] = useState(true);
   const { buyPackage } = useAuth();
+  const navigate = useNavigate();
 
   const checkForSure = async (pack) => {
     try {
@@ -19,7 +21,9 @@ export default function PackagePage() {
       if (result) {
         const res = await buyPackage(pack);
         if (res.status === 200) {
-          window.location.href = "#/menu";
+          navigate("/menu");
+        } else {
+          alert("ไม่สามารถซื้อ package ได้");
         }
       }
     } catch (error) {

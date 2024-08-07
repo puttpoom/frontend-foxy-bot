@@ -9,6 +9,7 @@ import ShopeePage from "../pages/ShopeePage";
 import PackagePage from "../pages/PackagePage";
 import { User } from "lucide-react";
 import UserPage from "../pages/UserPage";
+import ProtectedPackage from "../pages/ProtectedPackage";
 
 const router = createHashRouter([
   {
@@ -38,8 +39,12 @@ const router = createHashRouter([
         element: <MenuPage />,
       },
       {
-        path: "lazada",
-        element: <LazadaPage />,
+        path: "lazada/:packageId",
+        element: (
+          <ProtectedPackage>
+            <LazadaPage />
+          </ProtectedPackage>
+        ),
       },
       {
         path: "shopee",

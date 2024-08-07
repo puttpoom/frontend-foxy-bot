@@ -20,3 +20,6 @@ export const lineLogin = () => axios.get("/api/auth/line/login");
 
 export const linePostCallback = (data) =>
   axios.post("/api/auth/line/postCallback", data);
+
+export const checkUserPackage = (packageId) =>
+  axios.get(`/api/package/${packageId}`);
