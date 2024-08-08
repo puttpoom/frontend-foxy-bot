@@ -73,6 +73,7 @@ export default function LoginPage() {
         onChange={(data) => handleOnChangeInput("password", data)}
       />
       <MainButton onClick={() => handleLogin(userData)}>LOGIN</MainButton>
+
       {/* <MainButton type="line-btn" onClick={() => lineLogin()}>
         LINE LOGIN
       </MainButton> */}

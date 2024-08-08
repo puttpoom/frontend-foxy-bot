@@ -21,9 +21,7 @@
     "scripting",
     "activeTab",
     "windows",
-    "sessions",
-    "webNavigation",
-    "webRequest"
+    "sessions"
   ],
   "{{firefox}}.permissions": [
     "storage",
@@ -31,9 +29,7 @@
     "scripting",
     "activeTab",
     "windows",
-    "sessions",
-    "webNavigation",
-    "webRequest"
+    "sessions"
   ],
   "background": {
     "{{chrome}}.service_worker": "src/background.js",
