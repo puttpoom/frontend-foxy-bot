@@ -53,6 +53,8 @@ export default function AuthContextProvider({ children }) {
   const logout = async () => {
     const res = await authApi.logout();
     if (res.status === 200) {
+      removeToken();
+      window.location.href = "#/";
       await browser.storage.local.clear();
       setAuthUser("");
       console.log(res.data, "logout by AuthContextProvider");
