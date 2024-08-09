@@ -16,18 +16,19 @@ export default function PackagePage() {
   const checkForSure = async (pack) => {
     try {
       const result = window.confirm(
-        "คุณแน่ใจหรือไม่ว่าต้องการซื้อ package นี้"
+        "Are you sure you want to buy this package?"
       );
       if (result) {
         const res = await buyPackage(pack);
         if (res.status === 200) {
           navigate("/menu");
+          window.alert("Package bought successfully");
         } else {
-          alert("ไม่สามารถซื้อ package ได้");
+          window.alert(`${res.data.message}`);
         }
       }
     } catch (error) {
-      console.log("Error", error);
+      window.alert(`${error.response.data.message}`);
     }
   };
 
