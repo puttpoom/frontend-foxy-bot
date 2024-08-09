@@ -50,8 +50,8 @@ export default function LoginPage() {
     getAuthUser();
   }, []);
 
-  async function handleLogin(credentials) {
-    await login(credentials);
+  function handleLogin(credentials) {
+    login(credentials);
   }
 
   function handleOnChangeInput(key, value) {

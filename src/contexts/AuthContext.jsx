@@ -25,39 +25,47 @@ export default function AuthContextProvider({ children }) {
   };
 
   const login = async (credential) => {
-    const fp = await FingerprintJS.load();
-    const result = await fp.get();
-    const fingerprint = result.visitorId;
-    setUuid(fingerprint);
+    try {
+      const fp = await FingerprintJS.load();
+      const result = await fp.get();
+      const fingerprint = result.visitorId;
+      setUuid(fingerprint);
 
-    const data = { ...credential, uuid: fingerprint };
-    const res = await authApi.login(data);
-    if (res.status === 200) {
-      setAuthUser(res.data);
-      console.log(res.data, "login by AuthContextProvider");
-      const { user, accessToken } = res.data;
+      const data = { ...credential, uuid: fingerprint };
+      const res = await authApi.login(data);
+      if (res.status === 200) {
+        setAuthUser(res.data);
+        console.log(res.data, "login by AuthContextProvider");
+        const { user, accessToken } = res.data;
 
-      browser.storage.local.set({ user, accessToken, fingerprint });
-      const storageData = await browser.storage.local.get([
-        "user",
-        "accessToken",
-        "fingerprint",
-      ]);
-      console.log(storageData, "Auth Context");
-      return res.data;
-    } else {
-      return res;
+        browser.storage.local.set({ user, accessToken, fingerprint });
+        const storageData = await browser.storage.local.get([
+          "user",
+          "accessToken",
+          "fingerprint",
+        ]);
+        console.log(storageData, "Auth Context");
+        return res.data;
+      } else {
+        return window.confirm(`${res.data.message}`);
+      }
+    } catch (error) {
+      window.alert(`${error.response.data.message}`);
     }
   };
 
   const logout = async () => {
-    const res = await authApi.logout();
-    if (res.status === 200) {
-      removeToken();
-      window.location.href = "#/";
-      await browser.storage.local.clear();
-      setAuthUser("");
-      console.log(res.data, "logout by AuthContextProvider");
+    try {
+      const res = await authApi.logout();
+      if (res.status === 200) {
+        removeToken();
+        window.location.href = "#/";
+        await browser.storage.local.clear();
+        setAuthUser("");
+        console.log(res.data, "logout by AuthContextProvider");
+      }
+    } catch (error) {
+      window.alert(`${error.response.data.message}`);
     }
   };
 
