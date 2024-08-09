@@ -4,42 +4,41 @@ let intervalInjectScript;
 
 export function stopIntervalInjectScript() {
   clearInterval(intervalInjectScript);
-  console.log(`stopIntervalInjectScript`);
 }
+
 export default function injectScriptUntilSuccess(
   tabId,
-  scriptingDetails,
+  { function: func, args },
   delayRefresh = 800,
-  loop = 5
+  maxAttempts = 5
 ) {
+  let attempts = 0;
+
   return new Promise((resolve, reject) => {
-    let i = 1;
     intervalInjectScript = setInterval(async () => {
+      attempts++;
+
+      if (attempts > maxAttempts) {
+        stopIntervalInjectScript();
+        return reject(new Error(`Failed after ${maxAttempts} attempts`));
+      }
+
       try {
-        if (i <= loop) {
-          const [{ result }] = await browser.scripting.executeScript({
-            target: { tabId: tabId },
-            func: scriptingDetails.function,
-            args: scriptingDetails.args,
-          });
-          if (result.status && result.status !== null) {
-            stopIntervalInjectScript();
-            resolve(result);
-          } else if (!result) {
-            console.log("injectScriptUntilSuccess !result");
-            stopIntervalInjectScript();
-          } else {
-            i++;
-            console.log(result, "injectScriptUntilSuccess result");
-          }
-        } else {
+        const [{ result }] = await browser.scripting.executeScript({
+          target: { tabId },
+          func,
+          args,
+        });
+
+        if (result && result.status) {
           stopIntervalInjectScript();
-          reject(`injectScriptUntilSuccess i > ${loop}`);
+          return resolve(result);
+        } else {
+          console.log(result);
         }
       } catch (error) {
-        console.log(error, "CATCH ERROR: injectScriptUntilSuccess");
         stopIntervalInjectScript();
-        reject(error);
+        return reject(error);
       }
     }, delayRefresh);
   });

@@ -69,7 +69,7 @@ async function startBOT(data) {
 
 function stopBOT() {
   stopIntervalInjectScript();
-  console.log(`stopIntervalInjectScript by background.js`);
+  console.log(`stop bot on background.js`);
 }
 
 async function saveData(data) {
@@ -108,7 +108,8 @@ browser.runtime.onMessage.addListener((message) => {
       getData();
       break;
     case "STOP":
-      stopBOT(message.data);
+      stopBOT();
+
       break;
     case "LOG_OUT":
       logout();

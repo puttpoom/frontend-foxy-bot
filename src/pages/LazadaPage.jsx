@@ -91,7 +91,9 @@ export default function LazadaPage() {
       logout();
       return;
     }
-    browser.runtime.sendMessage({ type, data: formData });
+    browser.runtime.sendMessage({ type, data: formData }, (response) => {
+      console.log(response, "response from background.js");
+    });
   }
 
   return (
