@@ -45,7 +45,7 @@ export default async function LazadaShoper(tabs, data) {
             };
           },
         },
-        800
+        500
       );
 
       let changeQuantity = await injectScriptUntilSuccess(
@@ -54,7 +54,7 @@ export default async function LazadaShoper(tabs, data) {
           args: [XPATH_QUANTITY_INPUT, "changeValue", data.quantity],
           function: findElementByXpath,
         },
-        data.delayRefresh
+        500
       );
 
       let clickElBuyBTN = await injectScriptUntilSuccess(
@@ -86,6 +86,6 @@ export default async function LazadaShoper(tabs, data) {
     }
   } catch (error) {
     console.log("Error LazadaShoper: ", error);
-    stopIntervalInjectScript();
+    stopIntervalInjectScript("Error LazadaShoper");
   }
 }

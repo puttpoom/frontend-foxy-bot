@@ -2,25 +2,23 @@ import browser from "webextension-polyfill";
 
 let intervalInjectScript;
 
-export function stopIntervalInjectScript() {
+export function stopIntervalInjectScript(message) {
+  console.log(`${message} stopIntervalInjectScript`);
   clearInterval(intervalInjectScript);
 }
 
 export default function injectScriptUntilSuccess(
   tabId,
   { function: func, args },
-  delayRefresh = 800,
+  delayRefresh = 100,
   maxAttempts = 5
 ) {
-  let attempts = 0;
-
   return new Promise((resolve, reject) => {
+    let attempts = 0;
     intervalInjectScript = setInterval(async () => {
-      attempts++;
-
       if (attempts > maxAttempts) {
-        stopIntervalInjectScript();
-        return reject(new Error(`Failed after ${maxAttempts} attempts`));
+        stopIntervalInjectScript("Failed injectScriptUntilSuccess");
+        return reject(`Failed after ${maxAttempts} attempts`);
       }
 
       try {
@@ -31,13 +29,15 @@ export default function injectScriptUntilSuccess(
         });
 
         if (result && result.status) {
-          stopIntervalInjectScript();
+          console.log(result);
+          stopIntervalInjectScript("Success injectScriptUntilSuccess");
           return resolve(result);
-        } else {
+        } else if (!result || result.status === false) {
+          attempts++;
           console.log(result);
         }
       } catch (error) {
-        stopIntervalInjectScript();
+        stopIntervalInjectScript("Error injectScriptUntilSuccess");
         return reject(error);
       }
     }, delayRefresh);

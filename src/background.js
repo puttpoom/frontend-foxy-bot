@@ -68,8 +68,7 @@ async function startBOT(data) {
 }
 
 function stopBOT() {
-  stopIntervalInjectScript();
-  console.log(`stop bot on background.js`);
+  stopIntervalInjectScript("stopBOT");
 }
 
 async function saveData(data) {

@@ -86,14 +86,12 @@ export default function LazadaPage() {
 
   function handleOnClickButton(type) {
     if (type === "START") setIsRunning(true);
-    else setIsRunning(false);
+    if (type === "STOP") setIsRunning(false);
     if (type === "LOG_OUT") {
       logout();
       return;
     }
-    browser.runtime.sendMessage({ type, data: formData }, (response) => {
-      console.log(response, "response from background.js");
-    });
+    browser.runtime.sendMessage({ type, data: formData });
   }
 
   return (
