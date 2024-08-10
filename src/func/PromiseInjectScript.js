@@ -10,7 +10,7 @@ export function stopIntervalInjectScript(message) {
 export default function injectScriptUntilSuccess(
   tabId,
   { function: func, args },
-  delayRefresh = 100,
+  delayRefresh = 800,
   maxAttempts = 5
 ) {
   return new Promise((resolve, reject) => {

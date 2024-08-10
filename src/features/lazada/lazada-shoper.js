@@ -45,7 +45,7 @@ export default async function LazadaShoper(tabs, data) {
             };
           },
         },
-        500
+        data.delayRefresh
       );
 
       let changeQuantity = await injectScriptUntilSuccess(
@@ -54,7 +54,7 @@ export default async function LazadaShoper(tabs, data) {
           args: [XPATH_QUANTITY_INPUT, "changeValue", data.quantity],
           function: findElementByXpath,
         },
-        500
+        300
       );
 
       let clickElBuyBTN = await injectScriptUntilSuccess(
@@ -63,7 +63,7 @@ export default async function LazadaShoper(tabs, data) {
           args: [XPATH_BUY_NOW_BTN_TH, "click"],
           function: findElementByXpath,
         },
-        data.delayRefresh
+        600
       );
 
       let selectPaymentMethod = await injectScriptUntilSuccess(
@@ -72,7 +72,7 @@ export default async function LazadaShoper(tabs, data) {
           args: [XPATH_PAYMENT_METHOD[data.paymentMethod], "click"],
           function: findElementByXpath,
         },
-        data.delayRefresh
+        600
       );
 
       let clickOrderBTN = await injectScriptUntilSuccess(
@@ -81,7 +81,7 @@ export default async function LazadaShoper(tabs, data) {
           args: [XPATH_ORDER_BTN_TH, "click"],
           function: findElementByXpath,
         },
-        data.delayRefresh
+        600
       );
     }
   } catch (error) {
