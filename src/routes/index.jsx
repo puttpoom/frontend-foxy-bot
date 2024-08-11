@@ -54,7 +54,11 @@ const router = createHashRouter([
   },
   {
     path: "/package",
-    element: <Container />,
+    element: (
+      <ProtectedPage>
+        <Container />
+      </ProtectedPage>
+    ),
     children: [
       {
         path: "",
