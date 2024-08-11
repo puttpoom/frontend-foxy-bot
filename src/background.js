@@ -46,8 +46,10 @@ async function startBOT(data) {
       //   active: true,
       //   index: 0,
       // });
-      return await browser.windows.create({
+      return await browser.tabs.create({
         url: data.url,
+        active: true,
+        index: 0,
       });
     } else {
       switch (data.platform) {
@@ -114,10 +116,10 @@ browser.runtime.onMessage.addListener((message) => {
       logout();
       break;
     case "OPEN":
-      browser.windows.create({
-        url: message.data.url,
-        focused: true,
-      });
+      // browser.windows.create({
+      //   url: message.data.url,
+      //   focused: true,
+      // });
       break;
 
     default:

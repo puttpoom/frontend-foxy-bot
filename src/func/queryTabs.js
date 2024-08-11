@@ -2,7 +2,10 @@ import browser from "webextension-polyfill";
 
 export default async function queryTabs(url) {
   try {
-    let tabs = await browser.tabs.query({});
+    let tabs = await browser.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
     tabs = tabs.filter((tab) => tab.url === url);
     if (tabs.length === 0) {
       console.log(

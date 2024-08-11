@@ -9,6 +9,7 @@ import SelectorInput from "../components/SelectorInput";
 import MainButton from "../components/MainButton";
 
 import {
+  Link2,
   AppWindow,
   ShoppingBag,
   ChevronDown,
@@ -38,6 +39,7 @@ export default function LazadaPage() {
         active: true,
         currentWindow: true,
       });
+      console.log(tabs, "tabs ----- uesEffcet");
       let url = tabs[0].url;
       setFormData((prev) => ({ ...prev, url }));
     }
@@ -85,6 +87,10 @@ export default function LazadaPage() {
   }
 
   function handleOnClickButton(type) {
+    if (type === "OPEN") {
+      setFormData((prev) => ({ ...prev, url: `${window.location}` }));
+      console.log(window.location, "window.location");
+    }
     if (type === "START") setIsRunning(true);
     if (type === "STOP") setIsRunning(false);
     if (type === "LOG_OUT") {
@@ -119,8 +125,8 @@ export default function LazadaPage() {
             onClick={() => handleOnClickButton("OPEN")}
           >
             <p className="flex flex-grow-0 gap-1">
-              <AppWindow size={16} />
-              OPEN
+              <Link2 size={16} />
+              URL
             </p>
           </MainButton>
         </div>
