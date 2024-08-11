@@ -67,13 +67,16 @@ export default function MenuPage() {
     getAuthUser();
   }, []);
 
-  const getTimeLeft = (startDate, endDate) => {
-    const start = new Date(startDate);
+  function calculateDaysLeft(endDate) {
+    const now = new Date();
     const end = new Date(endDate);
-    const timeDiff = end.getTime() - start.getTime();
-    const days = timeDiff / (1000 * 3600 * 24);
-    return days.toFixed(0) + " days left";
-  };
+
+    const diff = end - now;
+
+    const leftTime = diff / (1000 * 60 * 60 * 24);
+
+    return Math.round(leftTime) + " days left";
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -93,8 +96,7 @@ export default function MenuPage() {
                         );
                       }}
                     >
-                      {el.package.name} [{getTimeLeft(el.startDate, el.endDate)}
-                      ]
+                      {el.package.name} [{calculateDaysLeft(el.endDate)}]
                     </MainButton>
                   );
                 } else {
